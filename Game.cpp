@@ -21,4 +21,5 @@ int Game()
         oldTime = newTime;
         WASDmovement(&player, dTime);
 	}
+    return 0;
 }	

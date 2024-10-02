@@ -53,7 +53,7 @@ int SDL_main(int argc, char** argv)
 	texturs[main_menu_background]->dst.h = WIN_HEIGHT;
 
 	Menu();
-	RecordSave(records);
+	//RecordSave(records);
 	Mix_FreeMusic(music);
 	/*Высвобождение памяти*/
 
