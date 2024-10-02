@@ -23,7 +23,8 @@ extern Record* records;
 /*Музыка*/
 extern Mix_Music* music;
 
-
+#define PLAYER_WIDTH 20
+#define PLAYER_HEIGHT 20
 #define MAX_ENEMIES 100
 #define ENEMY_TYPE_RUNNER 1
 #define ENEMY_TYPE_SHOOTER 2

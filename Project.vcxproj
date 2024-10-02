@@ -132,8 +132,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boosts.cpp" />
+    <ClCompile Include="Bullets.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Record.cpp" />
     <ClCompile Include="Text.cpp" />
@@ -143,6 +146,8 @@
     <ClCompile Include="Textur.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boosts.h" />
+    <ClInclude Include="Bullets.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Global.h" />

@@ -1,4 +1,44 @@
 #include "Game.h"
+void drawPlayer(Player* player)
+{
+    SDL_SetRenderDrawColor(ren, 0, 0, 255, 255);
+    SDL_Rect playerRect = { player->x, player->y, PLAYER_WIDTH, PLAYER_HEIGHT };
+    SDL_RenderFillRect(ren, &playerRect);
+}
+void drawEnemy(Enemy* enemy, int type) {
+    switch (type) {
+    case ENEMY_TYPE_RUNNER:
+        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+        break;
+    case ENEMY_TYPE_SHOOTER:
+        SDL_SetRenderDrawColor(ren, 255, 255, 0, 255);
+        break;
+    case ENEMY_TYPE_STATICSHOOTER:
+        SDL_SetRenderDrawColor(ren, 255, 0, 255, 255);
+        break;
+    default:
+        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+        break;
+    }
+    SDL_Rect enemyRect = { enemy->x, enemy->y, ENEMY_SIZE,ENEMY_SIZE };
+    SDL_RenderFillRect(ren, &enemyRect);
+}
+void drawBoost(Boost* boost, int type)
+{
+    switch (type)
+    {
+    case SPEED_BOOST:
+        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255); // пока красный
+        break;
+    case DMG_BOOST:
+        SDL_SetRenderDrawColor(ren, 0, 0, 255, 255); // цвет не забыть поменять
+        break;
+    default:
+        break;
+    }
+    SDL_Rect boostRect = { boost->x,boost->y, BOOST_SIZE,BOOST_SIZE };
+    SDL_RenderFillRect(ren, &boostRect);
+}
 int Game()
 {
 	bool run = true;
@@ -53,8 +93,8 @@ int Game()
                 enemies[i].update(&enemies[i], &player, enemies, dTime, numEnemies, i); // постоянно апдейтим позиции врагов
             }
             //updateRunningEnemyPosition(&Runningenemy, &player, dTime);
-            SDL_SetRenderDrawColor(render, 255, 255, 255, 255); // Пока заглушка белая
-            SDL_RenderClear(render);
+            SDL_SetRenderDrawColor(ren, 255, 255, 255, 255); // Пока заглушка белая
+            SDL_RenderClear(ren);
             if (SDL_GetTicks() >= playerWeapon.nextFireTime) {
                 playerWeapon.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
                 playerWeapon.nextFireTime = SDL_GetTicks() + (1000 / playerWeapon.fireRate);
@@ -77,7 +117,7 @@ int Game()
                     bullets[i].y += bullets[i].dy * (dTime / 1000.0);
 
                     // Проверка на выход за пределы экрана
-                    if (bullets[i].x < 0 || bullets[i].x > WINWIDTH || bullets[i].y < 0 || bullets[i].y > WINHEIGHT) {
+                    if (bullets[i].x < 0 || bullets[i].x > WIN_WIDTH || bullets[i].y < 0 || bullets[i].y > WIN_HEIGHT) {
                         bullets[i].active = false;
                     }
                     else {
@@ -104,7 +144,7 @@ int Game()
             }
             for (int i = 0; i < MAX_BULLETS; i++) {
                 if (bullets[i].active) {
-                    drawBullet(render, &bullets[i]);
+                    drawBullet(ren, &bullets[i]);
                 }
             }
             drawPlayer(&player);
@@ -113,9 +153,8 @@ int Game()
             }
             if (boost.active) // если заспавнен отрисовываем
                 drawBoost(&boost, boost.type);
-            SDL_RenderPresent(render);
+            SDL_RenderPresent(ren);
 
         }
-    }
     return 0;
 }	
