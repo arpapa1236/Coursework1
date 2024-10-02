@@ -1,12 +1,8 @@
 #include "Global.h"
 #include "Textur.h"
 #include "STD.h"
-struct Player {
-    Textur* text;
-    double x, y;
-    int speed, health, dmg, boostType, boostEndTime;
-};
-void movePlayer(Player* player, double dx, double dy, double dTime) // Просчет скорости и ограничения
+#include "Player.h"
+void movePlayer(Player* player, double dx, double dy, int dTime) // Просчет скорости и ограничения
 // ограничения убрать если карту бесшовником.
 {
     double length = sqrt(dx * dx + dy * dy);
@@ -27,5 +23,37 @@ void movePlayer(Player* player, double dx, double dy, double dTime) // Просчет с
     }
     else if (player->y > WIN_HEIGHT - player->text->dst.h) {
         player->y = WIN_HEIGHT - player->text->dst.h;
+    }
+}
+void WASDmovement(Player* player, double dTime)
+{
+    if (keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_A])
+    {
+        movePlayer(player, -1, -1, dTime);
+    }
+    else if (keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_D])
+    {
+        movePlayer(player, 1, -1, dTime);
+    }
+    else if (keyboard[SDL_SCANCODE_S] && keyboard[SDL_SCANCODE_A]) {
+        movePlayer(player, -1, 1, dTime);
+    }
+    else if (keyboard[SDL_SCANCODE_S] && keyboard[SDL_SCANCODE_D]) {
+        movePlayer(player, 1, 1, dTime);
+    }
+    else
+    {
+        if (keyboard[SDL_SCANCODE_W]) {
+            movePlayer(player, 0, -1, dTime);
+        }
+        if (keyboard[SDL_SCANCODE_S]) {
+            movePlayer(player, 0, 1, dTime);
+        }
+        if (keyboard[SDL_SCANCODE_A]) {
+            movePlayer(player, -1, 0, dTime);
+        }
+        if (keyboard[SDL_SCANCODE_D]) {
+            movePlayer(player, 1, 0, dTime);
+        }
     }
 }

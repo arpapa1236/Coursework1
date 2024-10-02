@@ -12,6 +12,7 @@
 #include "Global.h"
 #include "Textur.h"
 #include "Record.h"
+#include "Game.h"
 /*Клавиатура*/
 const Uint8* keyboard;
 /*Окно*/
@@ -34,8 +35,6 @@ int newtime, oldtime = 0, deltime = 0;
 int Menu();
 
 int Setting();
-
-int Play();
 
 int SDL_main(int argc, char** argv)
 {
@@ -162,7 +161,7 @@ int Menu()
 					{
 					case 1: 
 						
-						switch (Play())
+						switch (Game())
 						{
 						case -1:
 							//SDL_QUIT
@@ -313,11 +312,5 @@ int Setting()
 	TextDestroy(textVolume);
 	TextDestroy(back[0]);
 	TextDestroy(back[1]);
-	return 0;
-}
-
-int Play()
-{
-	std::cout << "Вы побывали в Play" << std::endl;
 	return 0;
 }
