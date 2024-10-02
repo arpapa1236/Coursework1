@@ -2,6 +2,7 @@
 #include "Textur.h"
 #include "STD.h"
 struct Player {
+    Textur* text;
     double x, y;
     int speed, health, dmg, boostType, boostEndTime;
 };
@@ -18,13 +19,13 @@ void movePlayer(Player* player, double dx, double dy, double dTime) // Просчет с
     if (player->x < 0) {
         player->x = 0;
     }
-    else if (player->x > WIN_WIDTH - PLAYER_WIDTH) {
-        player->x = WIN_WIDTH - PLAYER_WIDTH;
+    else if (player->x > WIN_WIDTH - player->text->dst.w) {
+        player->x = WIN_WIDTH - player->text->dst.w;
     }
     if (player->y < 0) {
         player->y = 0;
     }
-    else if (player->y > WIN_HEIGHT - PLAYER_HEIGHT) {
-        player->y = WIN_HEIGHT - PLAYER_HEIGHT;
+    else if (player->y > WIN_HEIGHT - player->text->dst.h) {
+        player->y = WIN_HEIGHT - player->text->dst.h;
     }
 }
