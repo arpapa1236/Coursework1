@@ -57,7 +57,7 @@ int Game()
     for (int i = 0; i < MAX_BULLETS; i++) {
         bullets[i].active = false;
     }
-    int numEnemies = 5; // С этим потом придумает чет, чтобы доспавнивать от времени массив наверн динамический делать надо будет или вообще какую-то настройку изменения максимального кол-ва звучит прикольно
+    int numEnemies = 5;
     spawnEnemies(enemies, numEnemies);
     Boost boost;
     boost.active = false;
@@ -92,6 +92,7 @@ int Game()
             }
             removeBoost(&player, &boost, currentFrameTime); // Если буст активен на игроке то убираем его по истечению времени
             for (int i = 0; i < numEnemies; i++) {
+                if(enemies[i].health>0)
                 enemies[i].update(&enemies[i], &player, enemies, dTime, numEnemies, i); // постоянно апдейтим позиции врагов
             }
             //updateRunningEnemyPosition(&Runningenemy, &player, dTime);
@@ -129,6 +130,10 @@ int Game()
                                 if (enemies[j].active && checkBulletCollision(bullets[i], enemies[j])) {
                                     bullets[i].active = false;
                                     enemies[j].health -= player.dmg;
+                                    if (enemies[j].health > 0)
+                                        enemies[j].active = 1;
+                                    else
+                                        enemies[j].active = 0; //ВАНЬ Я РАБОТАЛ ТУТ
                                     break;
                                 }
                             }

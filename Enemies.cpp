@@ -107,7 +107,7 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
     else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
     checkCollisions(es, numEnemies, current);
 }
-void initEnemy(Enemy* e, int type, double x, double y) // сохраняем тип и координаты врага выбираем логику поведения
+void initEnemy(Enemy* e, int type, double x, double y, int health) // сохраняем тип и координаты врага выбираем логику поведения
 {
     e->x = x;
     e->y = y;
@@ -115,6 +115,7 @@ void initEnemy(Enemy* e, int type, double x, double y) // сохраняем тип и коорди
     //e->y = y;
     e->type = type; // Сохраняем тип в структуру для отрисовки цвета и поведения
     e->active = 1;
+    e->health = health;
     if (type == ENEMY_TYPE_RUNNER) {
         e->update = updateRunningEnemyPosition;
         e->sprite = Sprite_Load(ren, "runner.spr");
@@ -136,10 +137,10 @@ void spawnEnemies(Enemy* enemies, int numEnemies) // непосредственно выбираем ти
     for (int i = 0; i < numEnemies; i++) {
         int type = 1;
         //int type = rand() % 3 + 1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
-        int health = 100;
+        int health = 30;
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;
-        initEnemy(&enemies[i], type, x, y);
+        initEnemy(&enemies[i], type, x, y, health);
 
     }
 }

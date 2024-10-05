@@ -2,6 +2,7 @@
 #include "Textur.h"
 #include "STD.h"
 #include "Player.h"
+int isRight = 1;
 void movePlayer(Player* player, double dx, double dy, int dTime) // ѕросчет скорости и ограничени€
 // ограничени€ убрать если карту бесшовником.
 {
@@ -51,9 +52,11 @@ void WASDmovement(Player* player, double dTime)
         }
         if (keyboard[SDL_SCANCODE_A]) {
             movePlayer(player, -1, 0, dTime);
+            isRight = 0;
         }
         if (keyboard[SDL_SCANCODE_D]) {
             movePlayer(player, 1, 0, dTime);
+            isRight = 1;
         }
     }
 }
