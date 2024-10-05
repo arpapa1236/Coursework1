@@ -23,13 +23,19 @@ extern Record* records;
 /*Музыка*/
 extern Mix_Music* music;
 
-#define PLAYER_WIDTH 20
-#define PLAYER_HEIGHT 20
+#define TEXTUR_MULT 0.5
+
+//Обратная совместимость
+#define ENEMY_WIDTH 50
+#define ENEMY_HEIGHT 50
+#define PLAYER_WIDTH 50
+#define PLAYER_HEIGHT 50
+
 #define MAX_ENEMIES 100
 #define ENEMY_TYPE_RUNNER 1
 #define ENEMY_TYPE_SHOOTER 2
 #define ENEMY_TYPE_STATICSHOOTER 3
-#define ENEMY_SIZE 20
+#define ENEMY_SIZE 50
 #define PLAYER_SPEED 90
 #define ENEMY_SPEED 45
 #define BULLET_SPEED 150
@@ -54,23 +60,28 @@ typedef enum {
     OWNER_PLAYER,
     OWNER_ENEMY
 } BulletOwner;
+
 struct Player {
     Sprite* text;
     double x, y;
     int speed, health, dmg, boostType, boostEndTime;
 };
+
 struct Enemy {
+    Sprite* sprite;
     double x, y;
     int health;
     int type;
     bool active;
     void (*update)(void*, void*, void*, double, int, int); // функция обновления для игрового цикл, нашел, вроде прикольно, до конца все равно не понимаю
 };
+
 struct Boost {
     double x, y;
     int type, spawnTime;
     bool active;
 };
+
 typedef struct {
     double x, y;
     double dx, dy;  // Направление движения
@@ -87,4 +98,5 @@ typedef struct {
     void (*fire)(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies, int numEnemies);
     void (*enfire)(void* owner, Bullet* bullets, int maxBullets, Player* player, int numEnemies);
 } Weapon;
+
 extern Bullet bullets[MAX_BULLETS];

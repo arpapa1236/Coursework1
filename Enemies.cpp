@@ -3,15 +3,18 @@ void checkCollisions(Enemy* enemies, int numEnemies, int current)// Коллизия вра
 // По диагонали проблемно потом доработать обязательно что тут что на игроке, на пуле мб тоже
 {
     for (int i = 0; i < numEnemies; i++) {
+        int w = enemies[i].sprite->src.w;
+        int h = enemies[i].sprite->src.h;
+        int max = h > w ? h : w;
         if (i != current) {
             double dx = enemies[i].x - enemies[current].x;
             double dy = enemies[i].y - enemies[current].y;
             double distance = sqrt(dx * dx + dy * dy);
-            if (distance < ENEMY_SIZE) {
-                enemies[current].x -= dx / distance * (ENEMY_SIZE - distance) / 2;
-                enemies[current].y -= dy / distance * (ENEMY_SIZE - distance) / 2;
-                enemies[i].x += dx / distance * (ENEMY_SIZE - distance) / 2;
-                enemies[i].y += dy / distance * (ENEMY_SIZE - distance) / 2;
+            if (distance < max) {
+                enemies[current].x -= dx / distance * (w - distance) / 2;
+                enemies[current].y -= dy / distance * (h - distance) / 2;
+                enemies[i].x += dx / distance * (w - distance) / 2;
+                enemies[i].y += dy / distance * (h - distance) / 2;
             }
         }
     }
@@ -41,6 +44,8 @@ void updateRunningEnemyPosition(void* enemy, void* player, void* enemies, double
     if (e->y < 0) e->y = 0;
     else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
     checkCollisions(es, numEnemies, current);
+    e->sprite->dst.x = e->x;
+    e->sprite->dst.y = e->y;
 }
 void updateShootingEnemyPosition(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current) {
     Enemy* e = (Enemy*)enemy;
@@ -106,28 +111,35 @@ void initEnemy(Enemy* e, int type, double x, double y) // сохраняем тип и коорди
 {
     e->x = x;
     e->y = y;
+    //e->x = x;
+    //e->y = y;
     e->type = type; // Сохраняем тип в структуру для отрисовки цвета и поведения
+    e->active = 1;
     if (type == ENEMY_TYPE_RUNNER) {
-        e->active = 1;
         e->update = updateRunningEnemyPosition;
+        e->sprite = Sprite_Load(ren, "runner.spr");
+        e->sprite->dst.h *= TEXTUR_MULT;
+        e->sprite->dst.w *= TEXTUR_MULT;
+        e->sprite->dst.x = x;
+        e->sprite->dst.y = y;
     }
     else if (type == ENEMY_TYPE_SHOOTER) {
-        e->active = 1;
         e->update = updateShootingEnemyPosition;
     }
     else if (type == ENEMY_TYPE_STATICSHOOTER)
     {
-        e->active = 1;
         e->update = updatestaticShootingEnemyPosition;
     }
 }
 void spawnEnemies(Enemy* enemies, int numEnemies) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
     for (int i = 0; i < numEnemies; i++) {
-        int type = rand() % 3 + 1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+        int type = 1;
+        //int type = rand() % 3 + 1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
         int health = 100;
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;
         initEnemy(&enemies[i], type, x, y);
+
     }
 }

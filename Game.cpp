@@ -6,22 +6,23 @@ void drawPlayer(Player* player)
     SDL_RenderFillRect(ren, &playerRect);
 }
 void drawEnemy(Enemy* enemy, int type) {
-    switch (type) {
-    case ENEMY_TYPE_RUNNER:
-        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
-        break;
-    case ENEMY_TYPE_SHOOTER:
-        SDL_SetRenderDrawColor(ren, 255, 255, 0, 255);
-        break;
-    case ENEMY_TYPE_STATICSHOOTER:
-        SDL_SetRenderDrawColor(ren, 255, 0, 255, 255);
-        break;
-    default:
-        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
-        break;
-    }
-    SDL_Rect enemyRect = { enemy->x, enemy->y, ENEMY_SIZE,ENEMY_SIZE };
-    SDL_RenderFillRect(ren, &enemyRect);
+    //switch (type) {
+    //case ENEMY_TYPE_RUNNER:
+    //    SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+    //    break;
+    //case ENEMY_TYPE_SHOOTER:
+    //    SDL_SetRenderDrawColor(ren, 255, 255, 0, 255);
+    //    break;
+    //case ENEMY_TYPE_STATICSHOOTER:
+    //    SDL_SetRenderDrawColor(ren, 255, 0, 255, 255);
+    //    break;
+    //default:
+    //    SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+    //    break;
+    //}
+    //SDL_Rect enemyRect = { enemy->x, enemy->y, ENEMY_SIZE,ENEMY_SIZE };
+    //SDL_RenderFillRect(ren, &enemyRect);
+    Sprite_RenderCopy(ren, enemy->sprite);
 }
 void drawBoost(Boost* boost, int type)
 {
@@ -39,6 +40,7 @@ void drawBoost(Boost* boost, int type)
     SDL_Rect boostRect = { boost->x,boost->y, BOOST_SIZE,BOOST_SIZE };
     SDL_RenderFillRect(ren, &boostRect);
 }
+
 int Game()
 {
 	bool run = true;

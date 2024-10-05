@@ -30,7 +30,7 @@ Sprite* Sprite_Load(SDL_Renderer* ren, const char* filename)
 	rez->w = image->w;
 	rez->h = image->h;
 	rez->src = { 0, 0, rez->w / rez->column, rez->h / rez->rows };
-	rez->dst = rez->src;
+	rez->dst = { 0, 0, rez->w / rez->column, rez->h / rez->rows };
 	SDL_FreeSurface(image);
 
 	rez->framex = rez->framey = rez->frametime = 0;
@@ -50,7 +50,7 @@ void Sprite_NextFrame(Sprite* spr, int dtime)
 			if (spr->framey == spr->rows)
 				spr->framey = 0;
 		}
-		spr->src = { spr->framex * spr->w / spr->column, spr->framey * spr->h / spr->rows, spr->src.w, spr->src.h };
+		spr->src = { spr->framex * spr->w / spr->column + spr->src.w, spr->framey * spr->h / spr->rows - spr->src.h, spr->src.w, spr->src.h };
 		spr->frametime = 0;
 	}
 }

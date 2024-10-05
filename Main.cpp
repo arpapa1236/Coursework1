@@ -36,27 +36,30 @@ int Menu();
 
 int Setting();
 
+using namespace std;
+
+ostream& operator<< (ostream& stream, SDL_Color color)
+{
+	stream << int(color.r) << ' ' << int(color.g) << ' ' << int(color.b) << ' ' << int(color.a) << ' ' << endl;
+	return stream;
+}
+
 int SDL_main(int argc, char** argv)
 {
 	system("chcp 65001>nul");
 	Init();
-
 	Load();
-	/*Шрифт*/
+	//Шрифт
 	fond = TTF_OpenFont("Font/RobotoMono.ttf", 50);
-
 	//Запуск музыки
 	Mix_PlayMusic(music, -1);
-
-	/*Установка размеров фона главного экрана*/
+	//Установка размеров фона главного экрана
 	texturs[main_menu_background]->dst.w = WIN_WIDTH;
 	texturs[main_menu_background]->dst.h = WIN_HEIGHT;
-
 	Menu();
 	//RecordSave(records);
 	Mix_FreeMusic(music);
-	/*Высвобождение памяти*/
-
+	//Высвобождение памяти
 	SDL_DeInit(0);
 	return 0;
 }
