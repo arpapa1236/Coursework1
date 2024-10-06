@@ -97,8 +97,9 @@ int Game()
                 enemies[i].update(&enemies[i], &player, enemies, dTime, numEnemies, i); // постоянно апдейтим позиции врагов
             }
             //updateRunningEnemyPosition(&Runningenemy, &player, dTime);
-            SDL_SetRenderDrawColor(ren, 255, 255, 255, 255); // Пока заглушка белая
+            SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
             SDL_RenderClear(ren);
+            Textur_RenderCopy(ren, texturs[map_background]);
             if (SDL_GetTicks() >= playerWeapon.nextFireTime) {
                 playerWeapon.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
                 playerWeapon.nextFireTime = SDL_GetTicks() + (1000 / playerWeapon.fireRate);

@@ -3,21 +3,25 @@
 /*
 1. Фон главного меню
 2. Фон карты
-3. Враг 1
-4. Враг 2
-5. Враг 3
-6. Враг 4
-7. Враг 5
 */
-char texturs_str[TEXTURS][50] =
+char texturs_str[TEXTURS][20] =
 {
 	{"bac_menu.png"},
 	{"bac_game.jpg"},
-	{"bac_menu.png"},
-	{"bac_menu.png"},
-	{"bac_menu.png"},
-	{"bac_menu.png"},
-	{"bac_menu.png"},
+	{""}
+	
+};
+
+char sprite_str[SPRITS][20] =
+{
+	{"plauer.spr"},
+	{"weapon1.spr"},
+	{"weapon2.spr"},
+	{"weapon3.spr"},
+	{"enemy1.spr"},
+	{"enemy2.spr"},
+	{"enemy3.spr"},
+	{"enemy4.spr"}
 };
 
 void Init()
@@ -78,8 +82,9 @@ void Load()
 	music = Mix_LoadMUS("music.mp3");
 	texturs = (Textur**)malloc(sizeof(Textur**) * TEXTURS);
 	records = nullptr;
-	for (int i = 0; i < TEXTURS; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		texturs[i] = Textur_Load(ren, texturs_str[i]);
 	}
+
 }

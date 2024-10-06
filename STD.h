@@ -13,32 +13,27 @@
 /* текстуры
 1.	Фон главного меню
 2.	Фон карты
-3.  Враг 1
-4. Враг 2
-5. Враг 3
-6. Враг 4
-7. Враг 5
 */
 enum Texturs
 {
 	main_menu_background,
 	map_background,
-	enemy1,
-	enemy2,
-	enemy3,
-	enemy4,
-	enemy5,
+	boost1,
+	boost2,
+	boost3
 };
 //Колличество текстур
-#define TEXTURS 7
+#define TEXTURS 5
 
 /* спрайты
 	1. Игрое
 	2. Оружие 1
 	3. Оружие 2
 	4. Оружие 3
-	5. Оружие 4
-	6. Оружие 5
+	5. Враг 1
+	6. Враг 2
+	7. Враг 3
+	8. Враг 4
 */
 enum Sprits
 {
@@ -46,11 +41,13 @@ enum Sprits
 	weapon1,
 	weapon2,
 	weapon3,
-	weapon4,
-	weapon5
+	enemy1,
+	enemy2,
+	enemy3,
+	enemy4
 };
 //Колличество спрайтов
-#define SPRITS 6
+#define SPRITS 8
 
 //Размеры окна
 #define WIN_WIDTH 1600
