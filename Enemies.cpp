@@ -135,8 +135,8 @@ void initEnemy(Enemy* e, int type, double x, double y, int health) // сохраняем 
 void spawnEnemies(Enemy* enemies, int numEnemies) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
     for (int i = 0; i < numEnemies; i++) {
-        int type = 1;
-        //int type = rand() % 3 + 1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+        int type = 0;
+        //int type = rand() % 3;  // Случайный выбор типа врага который бежит или стрелка (пока так)
         int health = 30;
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;

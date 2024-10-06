@@ -8,7 +8,7 @@ void spawnBoost(Boost* boost, int currentTime)
 {
     boost->x = rand() % WIN_WIDTH;
     boost->y = rand() % WIN_HEIGHT;
-    boost->type = rand() % 2 + 1;
+    boost->type = rand() % 3;
     boost->spawnTime = currentTime + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
     boost->active = false;
 }
@@ -42,6 +42,10 @@ void applyBoost(Player* player, Boost* boost)
     case DMG_BOOST:
         player->dmg += DMG_BOOST_AMOUNT;
         break;
+    case HP_BOOST:
+        player->health += HP_BOOST_AMOUNT;
+        if (player->health > 100)
+            player->health = 100;
     default:
         break;
     }

@@ -32,21 +32,14 @@ extern Mix_Music* music;
 #define PLAYER_HEIGHT 50
 
 #define MAX_ENEMIES 100
-#define ENEMY_TYPE_RUNNER 1
-#define ENEMY_TYPE_SHOOTER 2
-#define ENEMY_TYPE_STATICSHOOTER 3
 #define ENEMY_SIZE 50
 #define PLAYER_SPEED 90
 #define ENEMY_SPEED 45
 #define BULLET_SPEED 150
-#define BULLET_SIZE 4
+#define BULLET_SIZE 3
 #define BULLET_DAMAGE 5
 #define MAX_BULLETS 500
 #define BOOST_SIZE 40
-#define SPEED_BOOST 1
-#define SPEED_BOOST_AMOUNT 50
-#define DMG_BOOST 2
-#define DMG_BOOST_AMOUNT 2
 #define BOOST_DURATION 15000
 #define BOOST_PLAYER_DURATION 15000
 #define MIN_SPAWN_TIME 20000
@@ -55,6 +48,21 @@ extern Mix_Music* music;
 #define WEAPON_TYPE_TRIPLE_SHOT 2
 #define WEAPON_TYPE_AUTOAIM 3
 #define WEAPON_TYPE_ENEMY 4
+
+typedef enum {
+    SPEED_BOOST,
+    DMG_BOOST,
+    HP_BOOST
+}Boosts;
+#define SPEED_BOOST_AMOUNT 50
+#define DMG_BOOST_AMOUNT 2
+#define HP_BOOST_AMOUNT 25
+
+typedef enum {
+ENEMY_TYPE_RUNNER,
+ENEMY_TYPE_SHOOTER,
+ENEMY_TYPE_STATICSHOOTER
+}Enemies;
 
 typedef enum {
     OWNER_PLAYER,
