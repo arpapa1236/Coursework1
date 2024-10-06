@@ -107,7 +107,7 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
     else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
     checkCollisions(es, numEnemies, current);
 }
-void initEnemy(Enemy* e, int type, double x, double y, int health) // сохраняем тип и координаты врага выбираем логику поведения
+void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраняем тип и координаты врага выбираем логику поведения
 {
     e->x = x;
     e->y = y;
@@ -115,8 +115,8 @@ void initEnemy(Enemy* e, int type, double x, double y, int health) // сохраняем 
     //e->y = y;
     e->type = type; // Сохраняем тип в структуру для отрисовки цвета и поведения
     e->active = 1;
-    e->health = health;
     if (type == ENEMY_TYPE_RUNNER) {
+        e->health = 50+numOfWave*5;
         e->update = updateRunningEnemyPosition;
         e->sprite = Sprite_Load(ren, "runner.spr");
         e->sprite->dst.h *= TEXTUR_MULT;
@@ -132,30 +132,19 @@ void initEnemy(Enemy* e, int type, double x, double y, int health) // сохраняем 
         e->update = updatestaticShootingEnemyPosition;
     }
 }
+void deleteEnemies(Enemy* enemies, int numEnemies)
+{
+    //for (int i = 0; i < numEnemies; i++)
+        //text_Free(enemies[i].sprite);
+}
 void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
-    switch (numOfWave)
+    deleteEnemies(enemies, numEnemies - 10);
+    for (int i = 0; i < numEnemies; i++)
     {
-        case 0:
-        for (int i = 0; i < numEnemies; i++)
-        {
-            int type = 0;
-            //int type = rand() % 3;  // Случайный выбор типа врага который бежит или стрелка (пока так)
-            int health = 30;
-            double x = rand() % WIN_WIDTH;
-            double y = rand() % WIN_HEIGHT;
-            initEnemy(&enemies[i], type, x, y, health);
-        }
-        numEnemies *= 2;
-        break;
-        case 1:
-            for (int i = numEnemies/2; i < numEnemies; i++)
-            {
-                int type = 0;
-                int health = 30;
-                double x = rand() % WIN_WIDTH;
-                double y = rand() % WIN_HEIGHT;
-                initEnemy(&enemies[i], type, x, y, health);
-            }
+        int type = rand() % numOfWave;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+        double x = rand() % WIN_WIDTH;
+        double y = rand() % WIN_HEIGHT;
+        initEnemy(&enemies[i], type, x, y, numOfWave);
     }
 }
