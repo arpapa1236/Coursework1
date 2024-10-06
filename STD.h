@@ -20,10 +20,11 @@ enum Texturs
 	map_background,
 	boost1,
 	boost2,
-	boost3
+	boost3,
+	grob
 };
 //Колличество текстур
-#define TEXTURS 5
+#define TEXTURS 6
 
 /* спрайты
 	1. Игрое
