@@ -196,7 +196,18 @@ int Game()
             if (boost.active) // если заспавнен отрисовываем
                 drawBoost(&boost, boost.type);
 #pragma region HealthBar
-
+            SDL_SetRenderDrawColor(ren, 100, 100, 100, 255);
+            SDL_Rect rect = { 0, 0, WIN_WIDTH, 50 };
+            SDL_RenderFillRect(ren, &rect);
+            rect.x = 10;
+            rect.y = 10;
+            rect.h = 30;
+            rect.w -= 20;
+            SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+            SDL_RenderFillRect(ren, &rect);
+            SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+            rect.w = (WIN_WIDTH - 20) * player.health / 100;
+            SDL_RenderFillRect(ren, &rect);
 #pragma endregion
             SDL_RenderPresent(ren);
 
