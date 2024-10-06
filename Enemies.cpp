@@ -6,7 +6,7 @@ void checkCollisions(Enemy* enemies, int numEnemies, int current)// Коллизия вра
         int w = enemies[i].sprite->src.w/2;
         int h = enemies[i].sprite->src.h/2;
         int max = h > w ? h : w;
-        if (i != current) {
+        if (i != current && enemies[i].active) {
             double dx = enemies[i].x - enemies[current].x;
             double dy = enemies[i].y - enemies[current].y;
             double distance = sqrt(dx * dx + dy * dy);

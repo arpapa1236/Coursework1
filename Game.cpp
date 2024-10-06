@@ -39,7 +39,10 @@ void drawEnemy(Enemy* enemy, int type) {
     //}
     //SDL_Rect enemyRect = { enemy->x, enemy->y, ENEMY_SIZE,ENEMY_SIZE };
     //SDL_RenderFillRect(ren, &enemyRect);
-    Sprite_RenderCopy(ren, enemy->sprite);
+    if (enemy->active)
+        Sprite_RenderCopy(ren, enemy->sprite);
+    else
+        Textur_RenderCopy(ren, enemy->dead);
 }
 void drawBoost(Boost* boost, int type)
 {
@@ -66,7 +69,7 @@ int Game()
 	bool run = true;
     SDL_Event ev;
     Player player = {Sprite_Load(ren, "player.png"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE};
-    int currentFrameTime = 0, lastFrameTime = SDL_GetTicks(), dTime = 0, lastBulletTime = 0;
+    int currentFrameTime = 0, lastFrameTime = SDL_GetTicks(), dTime = 0, lastBulletTime = 0, attack1Time = 0;
     Enemy enemies[MAX_ENEMIES];
     Weapon playerWeaponTrip;
     Weapon playerWeapon;
@@ -95,6 +98,7 @@ int Game()
             currentFrameTime = SDL_GetTicks();
             dTime = currentFrameTime - lastFrameTime;
             lastFrameTime = currentFrameTime;
+            attack1Time += dTime;
             WASDmovement(&player, dTime);
 #pragma region WAVES
             if (activeEnemies == 0)
@@ -167,10 +171,12 @@ int Game()
                                         enemies[j].active = 1;
                                     else
                                     {
-                                        //Sprite_Free... Âû÷èùàåì íàõóé ñïðàéò
-                                        //Textur_add... Äîáàâëÿåì òðóï
-                                        enemies[j].active = 0; //ÂÀÍÜ ß ÐÀÁÎÒÀË ÒÓÒ
+                                        enemies[j].health = 0;
+                                        enemies[j].dead = Textur_Copy(texturs[grob]);
+                                        enemies[j].dead->dst = enemies[j].sprite->dst;
+                                        enemies[j].active = 0;
                                         activeEnemies--;
+                                        Sprite_Free(enemies[j].sprite);
                                     }
                                     break;
                                 }
@@ -187,22 +193,27 @@ int Game()
                     }
                 }
             }
-            for (int j = 0; j < numEnemies; j++)
+            if(attack1Time >= 1000)
             {
-                if (enemies[j].active && AreaDamage(&player, &enemies[j], 100))
+                for (int j = 0; j < numEnemies; j++)
                 {
-                    enemies[j].health -= player.dmg;
-                    if (enemies[j].health > 0)
-                        enemies[j].active = 1;
-                    else
+                    if (enemies[j].active && AreaDamage(&player, &enemies[j], 100))
                     {
-                        //Sprite_Free... Âû÷èùàåì íàõóé ñïðàéò
-                        //Textur_add... Äîáàâëÿåì òðóï
-                        enemies[j].active = 0; //ÂÀÍÜ ß ÐÀÁÎÒÀË ÒÓÒ
-                        activeEnemies--;
+                        enemies[j].health -= player.dmg;
+                        if (enemies[j].health > 0)
+                            enemies[j].active = 1;
+                        else
+                        {
+                            enemies[j].health = 0;
+                            enemies[j].dead = Textur_Copy(texturs[grob]);
+                            enemies[j].dead->dst = enemies[j].sprite->dst;
+                            enemies[j].active = 0;
+                            activeEnemies--;
+                            Sprite_Free(enemies[j].sprite);
+                        }
                     }
-                    break;
                 }
+                attack1Time = 0;
             }
             for (int i = 0; i < MAX_BULLETS; i++) {
                 if (bullets[i].active) {

@@ -31,3 +31,12 @@ void TexturDestroy(Textur* textur)
 	SDL_DestroyTexture(textur->text);
 	free(textur);
 }
+
+Textur* Textur_Copy(Textur* textur)
+{
+	Textur* rez = (Textur*)malloc(sizeof(Textur));
+	rez->text = textur->text;
+	rez->src = textur->src;
+	rez->dst = textur->dst;
+	return rez;
+}

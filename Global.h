@@ -77,6 +77,7 @@ struct Player {
 
 struct Enemy {
     Sprite* sprite;
+    Textur* dead;
     double x, y;
     int health;
     int type;

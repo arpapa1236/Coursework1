@@ -86,7 +86,7 @@ void Load()
 	music = Mix_LoadMUS("music.mp3");
 	texturs = (Textur**)malloc(sizeof(Textur**) * TEXTURS);
 	records = nullptr;
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < TEXTURS; i++)
 	{
 		texturs[i] = Textur_Load(ren, texturs_str[i]);
 	}
