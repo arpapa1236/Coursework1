@@ -162,6 +162,9 @@ int Game()
             }
             if (boost.active) // если заспавнен отрисовываем
                 drawBoost(&boost, boost.type);
+#pragma region HealthBar
+
+#pragma endregion
             SDL_RenderPresent(ren);
 
         }
