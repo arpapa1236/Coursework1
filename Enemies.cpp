@@ -27,6 +27,10 @@ void updateRunningEnemyPosition(void* enemy, void* player, void* enemies, double
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
+    if (dx < 0)
+        e->IsLeft = 1;
+    else if (dx > 0)
+        e->IsLeft = 0;
     double length = sqrt(dx * dx + dy * dy);
     if (length > PLAYER_WIDTH) {
         dx = (dx / length) * ENEMY_SPEED * (dTime / 1000.0);
@@ -115,6 +119,7 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
     //e->y = y;
     e->type = type; // Сохраняем тип в структуру для отрисовки цвета и поведения
     e->active = 1;
+    e->IsLeft = 1;
     if (type == ENEMY_TYPE_RUNNER) {
         e->health = 50+numOfWave*5;
         e->update = updateRunningEnemyPosition;

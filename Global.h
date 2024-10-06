@@ -81,7 +81,7 @@ struct Enemy {
     double x, y;
     int health;
     int type;
-    bool active;
+    bool active, IsLeft;
     void (*update)(void*, void*, void*, double, int, int); // функция обновления для игрового цикл, нашел, вроде прикольно, до конца все равно не понимаю
 };
 
