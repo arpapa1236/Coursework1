@@ -35,6 +35,9 @@ void drawBoost(Boost* boost, int type)
     case DMG_BOOST:
         SDL_SetRenderDrawColor(ren, 0, 0, 255, 255); // цвет не забыть поменять
         break;
+    case HP_BOOST:
+        SDL_SetRenderDrawColor(0, 255, 0, 255);
+        break;
     default:
         break;
     }

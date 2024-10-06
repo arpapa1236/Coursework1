@@ -46,6 +46,7 @@ void applyBoost(Player* player, Boost* boost)
         player->health += HP_BOOST_AMOUNT;
         if (player->health > 100)
             player->health = 100;
+        break;
     default:
         break;
     }
