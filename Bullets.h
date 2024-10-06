@@ -8,3 +8,4 @@ void drawBullet(SDL_Renderer* renderer, Bullet* bullet);
 bool checkBulletCollision(Bullet bullet, Enemy enemy);
 bool checkEnemyBulletCollision(Bullet bullet, Player player);
 bool AreaDamage(Player* player, Enemy* enemy, double radiusAreaDamage);
+bool AreaDamageforEnemy(Player* player, Enemy* enemy, double radiusAreaDamage);

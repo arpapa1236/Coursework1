@@ -126,6 +126,13 @@ bool AreaDamage(Player* player, Enemy* enemy, double radiusAreaDamage)
     double distance = sqrt(dx * dx + dy * dy);
     return distance <= radiusAreaDamage;
 }
+bool AreaDamageforEnemy(Player* player, Enemy* enemy, double radiusAreaDamage)
+{
+    double dx = enemy->x - player->x;
+    double dy = enemy->y - player->y;;
+    double distance = sqrt(dx * dx + dy * dy);
+    return distance <= radiusAreaDamage;
+}
 void initWeapon(Weapon* weapon, int type) {
     weapon->type = type;
     weapon->fireRate = 1.0; // Пример: выстрелы 1 раз в секунду
