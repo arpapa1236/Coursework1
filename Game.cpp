@@ -66,7 +66,7 @@ int Game()
 	bool run = true;
     SDL_Event ev;
     Player player = {Sprite_Load(ren, "player.png"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE};
-    int currentFrameTime=0, lastFrameTime=SDL_GetTicks(), dTime = 0, lastBulletTime = 0;;
+    int currentFrameTime = 0, lastFrameTime = SDL_GetTicks(), dTime = 0, lastBulletTime = 0;
     Enemy enemies[MAX_ENEMIES];
     Weapon playerWeaponTrip;
     Weapon playerWeapon;
@@ -159,7 +159,7 @@ int Game()
                     else {
                         if (bullets[i].owner == OWNER_PLAYER) {
                             // Проверка столкновения с врагом
-                            for (int j = 0; j < MAX_ENEMIES; j++) {
+                            for (int j = 0; j < numEnemies; j++) {
                                 if (enemies[j].active && checkBulletCollision(bullets[i], enemies[j])) {
                                     bullets[i].active = false;
                                     enemies[j].health -= player.dmg;
@@ -185,6 +185,23 @@ int Game()
                             }
                         }
                     }
+                }
+            }
+            for (int j = 0; j < numEnemies; j++)
+            {
+                if (enemies[j].active && AreaDamage(&player, &enemies[j], 100))
+                {
+                    enemies[j].health -= player.dmg;
+                    if (enemies[j].health > 0)
+                        enemies[j].active = 1;
+                    else
+                    {
+                        //Sprite_Free... Вычищаем нахуй спрайт
+                        //Textur_add... Добавляем труп
+                        enemies[j].active = 0; //ВАНЬ Я РАБОТАЛ ТУТ
+                        activeEnemies--;
+                    }
+                    break;
                 }
             }
             for (int i = 0; i < MAX_BULLETS; i++) {

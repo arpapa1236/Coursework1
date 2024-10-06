@@ -155,15 +155,12 @@ void fireAutoAim(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies, i
         }
     }
 }
-void AreaDamage(Player* player, Enemy* enemy, double radiusAreaDamage, int damage)
+bool AreaDamage(Player* player, Enemy* enemy, double radiusAreaDamage)
 {
     double dx = player->x - enemy->x;
     double dy = player->y - enemy->y;
     double distance = sqrt(dx * dx + dy * dy);
-    if (distance <= radiusAreaDamage)
-    {
-        enemy->health -= damage;
-    }
+    return distance <= radiusAreaDamage;
 }
 void initWeapon(Weapon* weapon, int type) {
     weapon->type = type;

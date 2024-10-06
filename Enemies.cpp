@@ -3,8 +3,8 @@ void checkCollisions(Enemy* enemies, int numEnemies, int current)//  оллизи€ вра
 // ѕо диагонали проблемно потом доработать об€зательно что тут что на игроке, на пуле мб тоже
 {
     for (int i = 0; i < numEnemies; i++) {
-        int w = enemies[i].sprite->src.w;
-        int h = enemies[i].sprite->src.h;
+        int w = enemies[i].sprite->src.w/2;
+        int h = enemies[i].sprite->src.h/2;
         int max = h > w ? h : w;
         if (i != current) {
             double dx = enemies[i].x - enemies[current].x;
@@ -142,7 +142,7 @@ void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредстве
     deleteEnemies(enemies, numEnemies - 10);
     for (int i = 0; i < numEnemies; i++)
     {
-        int type = rand() % numOfWave;  // —лучайный выбор типа врага который бежит или стрелка (пока так)
+        int type = rand() % 1;  // —лучайный выбор типа врага который бежит или стрелка (пока так)
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;
         initEnemy(&enemies[i], type, x, y, numOfWave);
