@@ -132,15 +132,30 @@ void initEnemy(Enemy* e, int type, double x, double y, int health) // сохраняем 
         e->update = updatestaticShootingEnemyPosition;
     }
 }
-void spawnEnemies(Enemy* enemies, int numEnemies) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
+void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
-    for (int i = 0; i < numEnemies; i++) {
-        int type = 0;
-        //int type = rand() % 3;  // Случайный выбор типа врага который бежит или стрелка (пока так)
-        int health = 30;
-        double x = rand() % WIN_WIDTH;
-        double y = rand() % WIN_HEIGHT;
-        initEnemy(&enemies[i], type, x, y, health);
-
+    switch (numOfWave)
+    {
+        case 0:
+        for (int i = 0; i < numEnemies; i++)
+        {
+            int type = 0;
+            //int type = rand() % 3;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+            int health = 30;
+            double x = rand() % WIN_WIDTH;
+            double y = rand() % WIN_HEIGHT;
+            initEnemy(&enemies[i], type, x, y, health);
+        }
+        numEnemies *= 2;
+        break;
+        case 1:
+            for (int i = numEnemies/2; i < numEnemies; i++)
+            {
+                int type = 0;
+                int health = 30;
+                double x = rand() % WIN_WIDTH;
+                double y = rand() % WIN_HEIGHT;
+                initEnemy(&enemies[i], type, x, y, health);
+            }
     }
 }

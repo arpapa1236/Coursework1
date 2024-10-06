@@ -36,7 +36,7 @@ void drawBoost(Boost* boost, int type)
         SDL_SetRenderDrawColor(ren, 0, 0, 255, 255); // цвет не забыть поменять
         break;
     case HP_BOOST:
-        SDL_SetRenderDrawColor(0, 255, 0, 255);
+        SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
         break;
     default:
         break;
@@ -61,8 +61,7 @@ int Game()
     for (int i = 0; i < MAX_BULLETS; i++) {
         bullets[i].active = false;
     }
-    int numEnemies = 5;
-    spawnEnemies(enemies, numEnemies);
+    int numEnemies = 20, numOfWave = 0, waveActive=0, activeEnemies=numEnemies;
     Boost boost;
     boost.active = false;
     boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
@@ -81,7 +80,35 @@ int Game()
             dTime = currentFrameTime - lastFrameTime;
             lastFrameTime = currentFrameTime;
             WASDmovement(&player, dTime);
-
+#pragma region WAVES
+            switch (numOfWave)
+            {
+            case 0:
+                if (waveActive == 0) {
+                    waveActive = 1;
+                    spawnEnemies(enemies, numEnemies, numOfWave);
+                }
+                if (activeEnemies == 0)
+                {
+                    waveActive = 0;
+                    numOfWave += 1;
+                }
+                break;
+            case 1:
+                if (waveActive == 0) {
+                    waveActive = 1;
+                    spawnEnemies(enemies, numEnemies, numOfWave);
+                }
+                if (activeEnemies == 0)
+                {
+                    waveActive = 0;
+                    numOfWave += 1;
+                }
+                break;
+            default:
+                break;
+            }
+#pragma endregion
 
             if (!boost.active && currentFrameTime >= boost.spawnTime) // буст не активен и спавн тайм подошел спавним активим
             {
@@ -138,7 +165,10 @@ int Game()
                                     if (enemies[j].health > 0)
                                         enemies[j].active = 1;
                                     else
+                                    {
                                         enemies[j].active = 0; //ВАНЬ Я РАБОТАЛ ТУТ
+                                        activeEnemies--;
+                                    }
                                     break;
                                 }
                             }
