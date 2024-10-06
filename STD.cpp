@@ -3,12 +3,16 @@
 /*
 1. Фон главного меню
 2. Фон карты
+3. Гробик
 */
 char texturs_str[TEXTURS][20] =
 {
 	{"bac_menu.png"},
 	{"bac_game.png"},
-	{""}
+	{"boost1.png"},
+	{"boost2.png"},
+	{"boost3.png"},
+	{"grob.png"}
 	
 };
 
