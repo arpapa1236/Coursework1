@@ -61,6 +61,12 @@ void Sprite_RenderCopy(SDL_Renderer* ren, Sprite* spr)
 		printf("Ошибка отрисовки:%s\n", SDL_GetError());
 }
 
+void Sprite_RenderCopyExp(SDL_Renderer* ren, Sprite* spr, double angel, SDL_RendererFlip flag)
+{	
+	if (SDL_RenderCopyEx(ren, spr->spr, &(spr->src), &(spr->dst), angel, NULL, flag))
+		printf("Ошибка отрисовки:%s\n", SDL_GetError());
+}
+
 void Sprite_Free(Sprite* spr)
 {
 	SDL_DestroyTexture(spr->spr);

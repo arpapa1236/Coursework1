@@ -37,5 +37,7 @@ Sprite* Sprite_Load(SDL_Renderer* ren, const char* filename);
 void Sprite_NextFrame(Sprite* text, int dtime);
 //Обертка RenderCopy
 void Sprite_RenderCopy(SDL_Renderer* ren, Sprite* spr);
+//Обертка RenderCopyExp
+void Sprite_RenderCopyExp(SDL_Renderer* ren, Sprite* spr, double angel, SDL_RendererFlip flag);
 //Удаляет текстуру
 void Sprite_Free(Sprite* spr);

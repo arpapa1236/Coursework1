@@ -1,4 +1,5 @@
 #include "Game.h"
+
 void drawPlayer(Player* player)
 {
     SDL_SetRenderDrawColor(ren, 0, 0, 255, 255);
