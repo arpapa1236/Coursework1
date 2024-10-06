@@ -7,7 +7,7 @@
 void fireBasic(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies, int numEnemies) {
     Player* p = (Player*)owner;
     Enemy* closestEnemy = NULL;
-    double minDistance = DBL_MAX;  // Используйте значение максимально возможного double для начального сравнения
+    double minDistance = DBL_MAX;  //максимально возможноый double для начального сравнения
 
     // Поиск ближайшего активного врага
     for (int j = 0; j < numEnemies; j++) {
@@ -119,42 +119,6 @@ void fireTripleShot(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies
         }
     }
 }
-void fireAutoAim(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies, int numEnemies) {
-    Player* p = (Player*)owner;
-    Enemy* closestEnemy = NULL;
-    double minDistance = DBL_MAX;
-
-    // Поиск ближайшего активного врага
-    for (int j = 0; j < numEnemies; j++) {
-        if (enemies[j].active) {
-            double dx = enemies[j].x - p->x;
-            double dy = enemies[j].y - p->y;
-            double distance = sqrt(dx * dx + dy * dy);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestEnemy = &enemies[j];
-            }
-        }
-    }
-
-    // Если ближайший враг найден, стреляем
-    if (closestEnemy != NULL) {
-        for (int i = 0; i < maxBullets; i++) {
-            if (!bullets[i].active) {
-                bullets[i].x = p->x;
-                bullets[i].y = p->y;
-                bullets[i].target = closestEnemy;
-                bullets[i].active = true;
-                double dx = closestEnemy->x - bullets[i].x;
-                double dy = closestEnemy->y - bullets[i].y;
-                double length = sqrt(dx * dx + dy * dy);
-                bullets[i].dx = dx / length * BULLET_SPEED * 0.5;
-                bullets[i].dy = dy / length * BULLET_SPEED;
-                break;
-            }
-        }
-    }
-}
 bool AreaDamage(Player* player, Enemy* enemy, double radiusAreaDamage)
 {
     double dx = player->x - enemy->x;
@@ -169,9 +133,6 @@ void initWeapon(Weapon* weapon, int type) {
     switch (type) {
     case WEAPON_TYPE_BASIC:
         weapon->fire = fireBasic;
-        break;
-    case WEAPON_TYPE_AUTOAIM:
-        weapon->fire = fireAutoAim;
         break;
     case WEAPON_TYPE_TRIPLE_SHOT:
         weapon->fire = fireTripleShot;

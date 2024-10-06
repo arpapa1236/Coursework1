@@ -38,7 +38,7 @@ extern Mix_Music* music;
 #define BULLET_SPEED 150
 #define BULLET_SIZE 3
 #define BULLET_DAMAGE 5
-#define MAX_BULLETS 500
+#define MAX_BULLETS 1000
 #define BOOST_SIZE 40
 #define BOOST_DURATION 15000
 #define BOOST_PLAYER_DURATION 15000
