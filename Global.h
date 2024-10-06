@@ -39,7 +39,7 @@ extern Mix_Music* music;
 #define PLAYER_SPEED 90
 #define ENEMY_SPEED 45
 #define BULLET_SPEED 150
-#define BULLET_SIZE 3
+#define BULLET_SIZE 4
 #define BULLET_DAMAGE 5
 #define MAX_BULLETS 500
 #define BOOST_SIZE 40

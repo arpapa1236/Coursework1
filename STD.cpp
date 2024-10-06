@@ -7,7 +7,7 @@
 char texturs_str[TEXTURS][20] =
 {
 	{"bac_menu.png"},
-	{"bac_game.jpg"},
+	{"bac_game.png"},
 	{""}
 	
 };
