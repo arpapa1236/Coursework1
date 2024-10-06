@@ -57,6 +57,10 @@ void updateShootingEnemyPosition(void* enemy, void* player, void* enemies, doubl
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
+    if (dx < 0)
+        e->IsLeft = 1;
+    else if (dx > 0)
+        e->IsLeft = 0;
     double length = sqrt(dx * dx + dy * dy);
     double range = 150; // Допустимый радиус, в пределах которого враг не будет приближаться к игроку
     static double lastShootTime = 0;
@@ -88,6 +92,10 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
+    if (dx < 0)
+        e->IsLeft = 1;
+    else if (dx > 0)
+        e->IsLeft = 0;
     double length = sqrt(dx * dx + dy * dy);
     double range = 150;
     static double lastShootTime = 0; // Время последнего выстрела
