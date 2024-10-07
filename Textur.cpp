@@ -10,6 +10,7 @@ Textur* Textur_Load(SDL_Renderer* ren, const char* file)
 		printf("Ошибка загрузки текстуры(%s): %s\n", s, SDL_GetError());
 		exit(-1);
 	}
+	SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
 	rez->text = SDL_CreateTextureFromSurface(ren, image);
 	if (rez->text == NULL)
 	{

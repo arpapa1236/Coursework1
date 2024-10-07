@@ -36,14 +36,6 @@ int Menu();
 
 int Setting();
 
-using namespace std;
-
-ostream& operator<< (ostream& stream, SDL_Color color)
-{
-	stream << int(color.r) << ' ' << int(color.g) << ' ' << int(color.b) << ' ' << int(color.a) << ' ' << endl;
-	return stream;
-}
-
 int SDL_main(int argc, char** argv)
 {
 	system("chcp 65001>nul");

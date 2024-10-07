@@ -14,5 +14,5 @@ Textur* Textur_Load(SDL_Renderer* ren, const char* file);
 void Textur_RenderCopy(SDL_Renderer* ren, Textur* textur);
 /*ќсвобождение пам€ти*/
 void TexturDestroy(Textur* textur);
-
+//ѕри использованиее Textur_Copy дл€ освобождении€ нужно использовать free()
 Textur* Textur_Copy(Textur* textur);

@@ -14,8 +14,6 @@ extern SDL_Window* win;
 extern SDL_Renderer* ren;
 /*Все текстуры*/
 extern Textur** texturs;
-/*Все спрайты*/
-extern Sprite** sprits;
 /*Единый шрифт*/
 extern TTF_Font* fond;
 /*Массив со всеми рекордами*/
@@ -73,6 +71,7 @@ struct Player {
     Sprite* text;
     double x, y;
     int speed, health, dmg, boostType, boostEndTime;
+    bool IsLeft;
 };
 
 struct Enemy {

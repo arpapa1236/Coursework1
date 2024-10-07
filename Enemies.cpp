@@ -132,18 +132,20 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
         e->health = 50+numOfWave*5;
         e->update = updateRunningEnemyPosition;
         e->sprite = Sprite_Load(ren, "runner.spr");
-        e->sprite->dst.h *= TEXTUR_MULT;
-        e->sprite->dst.w *= TEXTUR_MULT;
-        e->sprite->dst.x = x;
-        e->sprite->dst.y = y;
     }
     else if (type == ENEMY_TYPE_SHOOTER) {
         e->update = updateShootingEnemyPosition;
+        e->sprite = Sprite_Load(ren, "shooter.spr");
     }
     else if (type == ENEMY_TYPE_STATICSHOOTER)
     {
         e->update = updatestaticShootingEnemyPosition;
+        e->sprite = Sprite_Load(ren, "staticshooter.spr");
     }
+    e->sprite->dst.h *= TEXTUR_MULT;
+    e->sprite->dst.w *= TEXTUR_MULT;
+    e->sprite->dst.x = x;
+    e->sprite->dst.y = y;
 }
 void deleteEnemies(Enemy* enemies, int numEnemies)
 {

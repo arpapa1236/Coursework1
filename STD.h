@@ -26,30 +26,6 @@ enum Texturs
 //Колличество текстур
 #define TEXTURS 6
 
-/* спрайты
-	1. Игрое
-	2. Оружие 1
-	3. Оружие 2
-	4. Оружие 3
-	5. Враг 1
-	6. Враг 2
-	7. Враг 3
-	8. Враг 4
-*/
-enum Sprits
-{
-	player,
-	weapon1,
-	weapon2,
-	weapon3,
-	enemy1,
-	enemy2,
-	enemy3,
-	enemy4
-};
-//Колличество спрайтов
-#define SPRITS 8
-
 //Размеры окна
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900

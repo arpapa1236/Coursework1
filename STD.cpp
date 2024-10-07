@@ -13,19 +13,6 @@ char texturs_str[TEXTURS][20] =
 	{"boost2.png"},
 	{"boost3.png"},
 	{"grob.png"}
-	
-};
-
-char sprite_str[SPRITS][20] =
-{
-	{"plauer.spr"},
-	{"weapon1.spr"},
-	{"weapon2.spr"},
-	{"weapon3.spr"},
-	{"enemy1.spr"},
-	{"enemy2.spr"},
-	{"enemy3.spr"},
-	{"enemy4.spr"}
 };
 
 void Init()
@@ -90,5 +77,4 @@ void Load()
 	{
 		texturs[i] = Textur_Load(ren, texturs_str[i]);
 	}
-
 }

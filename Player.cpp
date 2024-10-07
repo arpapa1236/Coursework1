@@ -13,6 +13,10 @@ void movePlayer(Player* player, double dx, double dy, int dTime) // Просчет скор
     }
     player->x += dx;
     player->y += dy;
+    if (dx > 0)
+        player->IsLeft = 0;
+    if (dx < 0)
+        player->IsLeft = 1;
     if (player->x < 0) {
         player->x = 0;
     }
@@ -25,6 +29,8 @@ void movePlayer(Player* player, double dx, double dy, int dTime) // Просчет скор
     else if (player->y > WIN_HEIGHT - player->text->dst.h) {
         player->y = WIN_HEIGHT - player->text->dst.h;
     }
+    player->text->dst.x = player->x;
+    player->text->dst.y = player->y;
 }
 void WASDmovement(Player* player, double dTime)
 {

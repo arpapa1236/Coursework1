@@ -21,6 +21,7 @@ Sprite* Sprite_Load(SDL_Renderer* ren, const char* filename)
 		printf("Ошибка загрузки спрайта(%s): %s\n", s, SDL_GetError());
 		exit(-1);
 	}
+	SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
 	rez->spr = SDL_CreateTextureFromSurface(ren, image);
 	if (rez->spr == NULL)
 	{
@@ -50,7 +51,7 @@ void Sprite_NextFrame(Sprite* spr, int dtime)
 			if (spr->framey == spr->rows)
 				spr->framey = 0;
 		}
-		spr->src = { spr->framex * spr->w / spr->column + spr->src.w, spr->framey * spr->h / spr->rows - spr->src.h, spr->src.w, spr->src.h };
+		spr->src = { spr->framex * spr->w / spr->column, spr->framey * spr->h / spr->rows, spr->src.w, spr->src.h };
 		spr->frametime = 0;
 	}
 }
@@ -72,3 +73,5 @@ void Sprite_Free(Sprite* spr)
 	SDL_DestroyTexture(spr->spr);
 	free(spr);
 }
+
+//Немецкия классическая философия как культурный феномен. Общие черты

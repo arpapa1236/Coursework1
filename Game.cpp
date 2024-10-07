@@ -18,29 +18,20 @@ void HealthBar(Player* player)
 
 void drawPlayer(Player* player)
 {
-    SDL_SetRenderDrawColor(ren, 0, 0, 255, 255);
-    SDL_Rect playerRect = { player->x, player->y, PLAYER_WIDTH, PLAYER_HEIGHT };
-    SDL_RenderFillRect(ren, &playerRect);
+    if (player->IsLeft)
+        Sprite_RenderCopyExp(ren, player->text, 0, SDL_FLIP_HORIZONTAL);
+    else
+        Sprite_RenderCopy(ren, player->text);
 }
-void drawEnemy(Enemy* enemy, int type) {
-    //switch (type) {
-    //case ENEMY_TYPE_RUNNER:
-    //    SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
-    //    break;
-    //case ENEMY_TYPE_SHOOTER:
-    //    SDL_SetRenderDrawColor(ren, 255, 255, 0, 255);
-    //    break;
-    //case ENEMY_TYPE_STATICSHOOTER:
-    //    SDL_SetRenderDrawColor(ren, 255, 0, 255, 255);
-    //    break;
-    //default:
-    //    SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
-    //    break;
-    //}
-    //SDL_Rect enemyRect = { enemy->x, enemy->y, ENEMY_SIZE,ENEMY_SIZE };
-    //SDL_RenderFillRect(ren, &enemyRect);
+void drawEnemy(Enemy* enemy, int dtime) {
     if (enemy->active)
-        Sprite_RenderCopy(ren, enemy->sprite);
+    {
+        if (enemy->IsLeft)
+            Sprite_RenderCopyExp(ren, enemy->sprite, 0, SDL_FLIP_HORIZONTAL);
+        else
+            Sprite_RenderCopy(ren, enemy->sprite);
+        Sprite_NextFrame(enemy->sprite, dtime);
+    }
     else
         Textur_RenderCopy(ren, enemy->dead);
 }
@@ -68,7 +59,11 @@ int Game()
 {
 	bool run = true;
     SDL_Event ev;
-    Player player = {Sprite_Load(ren, "player.png"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE};
+    Player player = {Sprite_Load(ren, "player.spr"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE, 0};
+    player.text->dst.w *= 0.5;
+    player.text->dst.h *= 0.5;
+    player.text->dst.x = WIN_WIDTH / 2;
+    player.text->dst.y = WIN_HEIGHT / 2;
     int currentFrameTime = 0, lastFrameTime = SDL_GetTicks(), dTime = 0, lastBulletTime = 0, attack1Time = 0;
     Enemy enemies[MAX_ENEMIES];
     Weapon playerWeaponTrip;
@@ -114,7 +109,6 @@ int Game()
             }
 
 #pragma endregion
-
             if (!boost.active && currentFrameTime >= boost.spawnTime) // буст не активен и спавн тайм подошел спавним активим
             {
                 spawnBoost(&boost, currentFrameTime);
@@ -222,7 +216,7 @@ int Game()
             }
             drawPlayer(&player);
             for (int i = 0; i < numEnemies; i++) {
-                drawEnemy(&enemies[i], enemies[i].type);
+                drawEnemy(&enemies[i], dTime);
             }
             if (boost.active) // если заспавнен отрисовываем
                 drawBoost(&boost, boost.type);
