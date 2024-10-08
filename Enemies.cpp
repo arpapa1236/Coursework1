@@ -119,6 +119,10 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
     else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
     checkCollisions(es, numEnemies, current);
 }
+//void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current)
+//{
+//Код для босса
+//}
 void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраняем тип и координаты врага выбираем логику поведения
 {
     e->x = x;

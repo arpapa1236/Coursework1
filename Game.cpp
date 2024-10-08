@@ -192,13 +192,13 @@ int Game()
                     }
                 }
             }
-            if(attack1Time >= 1000)
+            if(attack1Time >= 300)
             {
                 for (int j = 0; j < numEnemies; j++)
                 {
                     if (enemies[j].active && AreaDamage(&player, &enemies[j], 100))
                     {
-                        enemies[j].health -= player.dmg;
+                        enemies[j].health -= 2;
                         if (enemies[j].health > 0)
                             enemies[j].active = 1;
                         else
@@ -211,6 +211,8 @@ int Game()
                             Sprite_Free(enemies[j].sprite);
                         }
                     }
+                    if (enemies[j].active && AreaDamageforEnemy(&player, &enemies[j], 50))
+                        player.health -= 2;
                 }
                 attack1Time = 0;
             }
