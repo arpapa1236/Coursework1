@@ -7,7 +7,7 @@
 void spawnBoost(Boost* boost, int currentTime)
 {
     boost->x = rand() % WIN_WIDTH;
-    boost->y = rand() % WIN_HEIGHT;
+    boost->y = rand() % (WIN_HEIGHT - HEIGHT_HEALTH_BAR) + HEIGHT_HEALTH_BAR;
     boost->type = rand() % 3;
     boost->spawnTime = currentTime + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
     boost->active = false;

@@ -41,6 +41,7 @@ int SDL_main(int argc, char** argv)
 	system("chcp 65001>nul");
 	Init();
 	Load();
+	srand(time(NULL));
 	//Шрифт
 	fond = TTF_OpenFont("Font/RobotoMono.ttf", 50);
 	//Запуск музыки
@@ -128,6 +129,7 @@ void PrintMenu(Text*** text, int act)
 
 int Menu()
 {
+
 	int returnCode = 0;
 	int ftime = 0;
 	SDL_Point mouse = { 0, 0 };

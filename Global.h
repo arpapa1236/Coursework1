@@ -46,6 +46,7 @@ extern Mix_Music* music;
 #define WEAPON_TYPE_TRIPLE_SHOT 2
 #define WEAPON_TYPE_AUTOAIM 3
 #define WEAPON_TYPE_ENEMY 4
+#define HEIGHT_HEALTH_BAR 50
 
 typedef enum {
     SPEED_BOOST,
@@ -71,7 +72,7 @@ struct Player {
     Sprite* text;
     double x, y;
     int speed, health, dmg, boostType, boostEndTime;
-    bool IsLeft;
+    bool IsLeft, Run;
 };
 
 struct Enemy {
@@ -88,6 +89,7 @@ struct Boost {
     double x, y;
     int type, spawnTime;
     bool active;
+    Textur* textur;
 };
 
 typedef struct {

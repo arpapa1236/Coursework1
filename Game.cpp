@@ -3,11 +3,11 @@
 void HealthBar(Player* player)
 {
     SDL_SetRenderDrawColor(ren, 100, 100, 100, 255);
-    SDL_Rect rect = { 0, 0, WIN_WIDTH, 50 };
+    SDL_Rect rect = { 0, 0, WIN_WIDTH, HEIGHT_HEALTH_BAR };
     SDL_RenderFillRect(ren, &rect);
     rect.x = 10;
     rect.y = 10;
-    rect.h = 30;
+    rect.h = HEIGHT_HEALTH_BAR - 20;
     rect.w -= 20;
     SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderFillRect(ren, &rect);
@@ -16,12 +16,14 @@ void HealthBar(Player* player)
     SDL_RenderFillRect(ren, &rect);
 }
 
-void drawPlayer(Player* player)
+void drawPlayer(Player* player, int dtime)
 {
     if (player->IsLeft)
         Sprite_RenderCopyExp(ren, player->text, 0, SDL_FLIP_HORIZONTAL);
     else
         Sprite_RenderCopy(ren, player->text);
+    if(player->Run)
+        Sprite_NextFrame(player->text, dtime);
 }
 void drawEnemy(Enemy* enemy, int dtime) {
     if (enemy->active)
@@ -37,29 +39,31 @@ void drawEnemy(Enemy* enemy, int dtime) {
 }
 void drawBoost(Boost* boost, int type)
 {
+    Textur* text = NULL;
     switch (type)
     {
     case SPEED_BOOST:
-        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255); // пока красный
+        text = texturs[boost1];
         break;
     case DMG_BOOST:
-        SDL_SetRenderDrawColor(ren, 0, 0, 255, 255); // цвет не забыть поменять
+        text = texturs[boost2];
         break;
     case HP_BOOST:
-        SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
+        text = texturs[boost3];
         break;
     default:
         break;
     }
-    SDL_Rect boostRect = { boost->x,boost->y, BOOST_SIZE,BOOST_SIZE };
-    SDL_RenderFillRect(ren, &boostRect);
+    text->dst.x = boost->x;
+    text->dst.y = boost->y;
+    Textur_RenderCopy(ren, text);
 }
 
 int Game()
 {
 	bool run = true;
     SDL_Event ev;
-    Player player = {Sprite_Load(ren, "player.spr"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE, 0};
+    Player player = {Sprite_Load(ren, "player.spr"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE, 0, 0};
     player.text->dst.w *= 0.5;
     player.text->dst.h *= 0.5;
     player.text->dst.x = WIN_WIDTH / 2;
@@ -90,6 +94,7 @@ int Game()
                     break;
                 }
             }
+            player.Run = 0;
             currentFrameTime = SDL_GetTicks();
             dTime = currentFrameTime - lastFrameTime;
             lastFrameTime = currentFrameTime;
@@ -214,7 +219,7 @@ int Game()
                     drawBullet(ren, &bullets[i]);
                 }
             }
-            drawPlayer(&player);
+            drawPlayer(&player, dTime);
             for (int i = 0; i < numEnemies; i++) {
                 drawEnemy(&enemies[i], dTime);
             }
@@ -222,7 +227,6 @@ int Game()
                 drawBoost(&boost, boost.type);
             HealthBar(&player);
             SDL_RenderPresent(ren);
-
         }
     return 0;
 }	
