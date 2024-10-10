@@ -62,7 +62,7 @@ void updateShootingEnemyPosition(void* enemy, void* player, void* enemies, doubl
     else if (dx > 0)
         e->IsLeft = 0;
     double length = sqrt(dx * dx + dy * dy);
-    double range = 150; // ƒопустимый радиус, в пределах которого враг не будет приближатьс€ к игроку
+    double range = 75; // ƒопустимый радиус, в пределах которого враг не будет приближатьс€ к игроку
     static double lastShootTime = 0;
     double currentTime = SDL_GetTicks() / 1000.0;
 
