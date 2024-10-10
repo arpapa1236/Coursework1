@@ -85,6 +85,8 @@ void updateShootingEnemyPosition(void* enemy, void* player, void* enemies, doubl
     else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
 
     checkCollisions(es, numEnemies, current);
+    e->sprite->dst.x = e->x;
+    e->sprite->dst.y = e->y;
 }
 void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current) {
     Enemy* e = (Enemy*)enemy;
@@ -118,10 +120,39 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
     if (e->y < 0) e->y = 0;
     else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
     checkCollisions(es, numEnemies, current);
+    e->sprite->dst.x = e->x;
+    e->sprite->dst.y = e->y;
 }
 //void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current)
 //{
-//Код для босса
+//    Enemy* e = (Enemy*)enemy;
+//    Player* p = (Player*)player;
+//    Enemy* es = (Enemy*)enemies;
+//    double dx = p->x - e->x;
+//    double dy = p->y - e->y;
+//    if (dx < 0)
+//        e->IsLeft = 1;
+//    else if (dx > 0)
+//        e->IsLeft = 0;
+//    double length = sqrt(dx * dx + dy * dy);
+//    if (length > PLAYER_WIDTH) {
+//        dx = (dx / length) * ENEMY_SPEED * (dTime / 1000.0);
+//        dy = (dy / length) * ENEMY_SPEED * (dTime / 1000.0);
+//        e->x += dx;
+//        e->y += dy;
+//    }
+//    else {
+//        e->x = p->x - ((dx / length) * PLAYER_WIDTH);
+//        e->y = p->y - ((dy / length) * PLAYER_HEIGHT);
+//    }
+//    if (e->x < 0) e->x = 0;
+//    else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
+//
+//    if (e->y < 0) e->y = 0;
+//    else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
+//    checkCollisions(es, numEnemies, current);
+//    e->sprite->dst.x = e->x;
+//    e->sprite->dst.y = e->y;
 //}
 void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраняем тип и координаты врага выбираем логику поведения
 {
@@ -133,16 +164,18 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
     e->active = 1;
     e->IsLeft = 1;
     if (type == ENEMY_TYPE_RUNNER) {
-        e->health = 50+numOfWave*5;
+        e->health = 35+numOfWave*5;
         e->update = updateRunningEnemyPosition;
         e->sprite = Sprite_Load(ren, "runner.spr");
     }
     else if (type == ENEMY_TYPE_SHOOTER) {
+        e->health = 10 + numOfWave * 5;
         e->update = updateShootingEnemyPosition;
         e->sprite = Sprite_Load(ren, "shooter.spr");
     }
     else if (type == ENEMY_TYPE_STATICSHOOTER)
     {
+        e->health = 10 + numOfWave * 5;
         e->update = updatestaticShootingEnemyPosition;
         e->sprite = Sprite_Load(ren, "staticshooter.spr");
     }
@@ -159,11 +192,22 @@ void deleteEnemies(Enemy* enemies, int numEnemies)
 void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
     deleteEnemies(enemies, numEnemies - 10);
-    for (int i = 0; i < numEnemies; i++)
+    if (numOfWave <= 4)
     {
-        int type = rand() % 1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+        for (int i = 0; i < numEnemies; i++)
+        {
+            int type = rand() % numOfWave+1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+            double x = rand() % WIN_WIDTH;
+            double y = rand() % WIN_HEIGHT + HEIGHT_HEALTH_BAR;
+            initEnemy(&enemies[i], type, x, y, numOfWave);
+        }
+    }
+    /*else if (numOfWave == 4)
+    {
+        int type = 4;
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;
         initEnemy(&enemies[i], type, x, y, numOfWave);
-    }
+
+    }*/
 }

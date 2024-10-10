@@ -106,9 +106,9 @@ int Game()
                 numOfWave++;
                 numEnemies += 10;
                 activeEnemies += numEnemies;
-                if (numOfWave == 4)
+                if (numOfWave == 5)
                 {
-                    // endgame
+                    //run = false;
                 }
                 spawnEnemies(enemies, numEnemies, numOfWave);
             }
@@ -134,11 +134,11 @@ int Game()
             SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
             SDL_RenderClear(ren);
             Textur_RenderCopy(ren, texturs[map_background]);
-            if (SDL_GetTicks() >= playerWeapon.nextFireTime) {
+            if (SDL_GetTicks() >= playerWeapon.nextFireTime && numOfWave > 1) {
                 playerWeapon.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
                 playerWeapon.nextFireTime = SDL_GetTicks() + (1000 / playerWeapon.fireRate);
             }
-            if (SDL_GetTicks() >= playerWeaponTrip.nextFireTime) {
+            if (SDL_GetTicks() >= playerWeaponTrip.nextFireTime && numOfWave > 2) {
                 playerWeaponTrip.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
                 playerWeaponTrip.nextFireTime = SDL_GetTicks() + (1000 / playerWeaponTrip.fireRate);
             }
@@ -198,7 +198,7 @@ int Game()
                 {
                     if (enemies[j].active && AreaDamage(&player, &enemies[j], 100))
                     {
-                        enemies[j].health -= 2;
+                        enemies[j].health -= 3;
                         if (enemies[j].health > 0)
                             enemies[j].active = 1;
                         else
