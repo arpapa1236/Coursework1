@@ -16,7 +16,7 @@ void HealthBar(Player* player)
     SDL_RenderFillRect(ren, &rect);
 }
 
-void drawPlayer(Player* player, int dtime)
+void drawPlayer(Player* player, Uint32 dtime)
 {
     if (player->IsLeft)
         Sprite_RenderCopyExp(ren, player->text, 0, SDL_FLIP_HORIZONTAL);
@@ -25,7 +25,8 @@ void drawPlayer(Player* player, int dtime)
     if(player->Run)
         Sprite_NextFrame(player->text, dtime);
 }
-void drawEnemy(Enemy* enemy, int dtime) {
+
+void drawEnemy(Enemy* enemy, Uint32 dtime) {
     if (enemy->active)
     {
         if (enemy->IsLeft)
@@ -37,6 +38,7 @@ void drawEnemy(Enemy* enemy, int dtime) {
     else
         Textur_RenderCopy(ren, enemy->dead);
 }
+
 void drawBoost(Boost* boost, int type)
 {
     Textur* text = NULL;
@@ -59,8 +61,24 @@ void drawBoost(Boost* boost, int type)
     Textur_RenderCopy(ren, text);
 }
 
+void Timer(TTF_Font* font, Uint32 time)
+{
+    
+    char str[20];
+    int sec = time / 1000;
+    sprintf(str, "%2.d:%2.d.%3.d", sec / 60, sec % 60, time % 1000);
+    for (int i = 0; i < 10; i++)
+        if (str[i] == ' ') str[i] = '0';
+    Text* timer_text = TextCreate(str, ren, { 255, 255, 255, 255 }, font);
+    timer_text->rect.x = WIN_WIDTH - timer_text->rect.w - 10;
+    timer_text->rect.y = WIN_HEIGHT - timer_text->rect.h - 10;
+    TextRender(timer_text, ren);
+    TextDestroy(timer_text);
+}
+
 int Game()
 {
+    TTF_Font* font_timer = TTF_OpenFont("Font\\RobotoMono.ttf", 30);
 	bool run = true;
     SDL_Event ev;
     Player player = {Sprite_Load(ren, "player.spr"), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE, 0, 0};
@@ -68,7 +86,7 @@ int Game()
     player.text->dst.h *= 0.5;
     player.text->dst.x = WIN_WIDTH / 2;
     player.text->dst.y = WIN_HEIGHT / 2;
-    int currentFrameTime = 0, lastFrameTime = SDL_GetTicks(), dTime = 0, lastBulletTime = 0, attack1Time = 0;
+    Uint32 currentFrameTime = 0, lastFrameTime = SDL_GetTicks(), dTime = 0, lastBulletTime = 0, attack1Time = 0, beginGame, endGame;
     Enemy enemies[MAX_ENEMIES];
     Weapon playerWeaponTrip;
     Weapon playerWeapon;
@@ -83,6 +101,9 @@ int Game()
     Boost boost;
     boost.active = false;
     boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
+
+    SDL_Texture* text_time;
+    beginGame = SDL_GetTicks();
         while (run) // Обычный игровой цикл
         {
             while (SDL_PollEvent(&ev)) // Мышку позже когда будет выбор при получении экспы.
@@ -90,15 +111,18 @@ int Game()
                 switch (ev.type)
                 {
                 case SDL_QUIT:
+                    endGame = SDL_GetTicks();
                     run = false;
                     break;
                 }
             }
             player.Run = 0;
+#pragma region TIME
             currentFrameTime = SDL_GetTicks();
             dTime = currentFrameTime - lastFrameTime;
             lastFrameTime = currentFrameTime;
             attack1Time += dTime;
+#pragma endregion //TIME
             WASDmovement(&player, dTime);
 #pragma region WAVES
             if (activeEnemies == 0)
@@ -131,9 +155,15 @@ int Game()
                 enemies[i].update(&enemies[i], &player, enemies, dTime, numEnemies, i); // постоянно апдейтим позиции врагов
             }
             //updateRunningEnemyPosition(&Runningenemy, &player, dTime);
+#pragma region CLEAR
             SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
             SDL_RenderClear(ren);
             Textur_RenderCopy(ren, texturs[map_background]);
+#pragma endregion //CLEAR
+#pragma region TIMER
+            Timer(font_timer, lastFrameTime - beginGame);
+#pragma endregion //TIMER
+
             if (SDL_GetTicks() >= playerWeapon.nextFireTime && numOfWave > 1) {
                 playerWeapon.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
                 playerWeapon.nextFireTime = SDL_GetTicks() + (1000 / playerWeapon.fireRate);
@@ -227,7 +257,9 @@ int Game()
             }
             if (boost.active) // если заспавнен отрисовываем
                 drawBoost(&boost, boost.type);
+#pragma region HEALTH_BAR
             HealthBar(&player);
+#pragma endregion //HEALTH_BAR
             SDL_RenderPresent(ren);
         }
     return 0;
