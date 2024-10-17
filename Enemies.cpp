@@ -130,6 +130,7 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
+    e->cooldown_timer = CHARGE_COOLDOWN;
     if (dx < 0)
         e->IsLeft = 1;
     else if (dx > 0)
