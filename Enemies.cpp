@@ -131,7 +131,7 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
-    bool attack = false;
+    static bool attack = false;
     if (dx < 0)
         e->IsLeft = 1;
     else if (dx > 0)
@@ -141,9 +141,17 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
     static int startChargeTime = 0;
     if (attack)
     {
-        if (SDL_GetTicks()-startChargeTime>)
+        if (SDL_GetTicks() - startChargeTime > CHARGE_DURATION * 1000)
         {
-
+            dx = e->target_x - e->x;
+            dy = e->target_y - e->y;
+            length = sqrt(dx * dx + dy * dy);
+            dx = (dx / length) * CHARGE_SPEED * (dTime / 1000.0);
+            dy = (dy / length) * CHARGE_SPEED * (dTime / 1000.0);
+            e->x += dx;
+            e->y += dy;
+            if (e->x - e->target_x < 10 && e->y - e->target_y < 10)
+                attack = false;
         }
     }
     else
