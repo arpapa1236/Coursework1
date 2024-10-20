@@ -103,12 +103,17 @@ int Game()
 #pragma region WAVES
             if (activeEnemies == 0)
             {
-                numOfWave++;
-                numEnemies += 10;
-                activeEnemies += numEnemies;
-                if (numOfWave == 5)
+                if (numOfWave < 4)
+
                 {
-                    //run = false;
+                    numOfWave++;
+                    numEnemies += 10;
+                    activeEnemies += numEnemies;
+                }
+                    if (numOfWave == 4)
+                {
+                        numEnemies = 1;
+                        activeEnemies += numEnemies;
                 }
                 spawnEnemies(enemies, numEnemies, numOfWave);
             }

@@ -228,31 +228,3 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
     e->sprite->dst.w *= TEXTUR_MULT;
     e->sprite->dst.x = x;
     e->sprite->dst.y = y;
-}
-//void deleteEnemies(Enemy* enemies, int numEnemies)
-//{
-//    for (int i = 0; i < numEnemies; i++)
-//        enemies[i] = { 0 };
-//}
-void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
-{
-    /*deleteEnemies(enemies, numEnemies - 10);*/
-    if (numOfWave <= 4)
-    {
-        for (int i = 0; i < numEnemies; i++)
-        {
-            int type = rand() % numOfWave+1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
-            double x = rand() % WIN_WIDTH;
-            double y = rand() % WIN_HEIGHT + HEIGHT_HEALTH_BAR;
-            initEnemy(&enemies[i], type, x, y, numOfWave);
-        }
-    }
-    else if (numOfWave == 4)
-    {
-        int type = 4;
-        double x = rand() % WIN_WIDTH;
-        double y = rand() % WIN_HEIGHT;
-        initEnemy(&enemies[0], type, x, y, numOfWave);
-
-    }
-}
