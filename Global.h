@@ -30,6 +30,11 @@ extern Mix_Music* music;
 #define ENEMY_HEIGHT 50
 #define PLAYER_WIDTH 50
 #define PLAYER_HEIGHT 50
+// босс
+#define CHARGE_DISTANCE 300.0
+#define CHARGE_DURATION 2.0 // в секундах, задержка перед тараном
+#define CHARGE_COOLDOWN 5.0
+#define CHARGE_SPEED 100.0 
 
 #define MAX_ENEMIES 100
 #define ENEMY_SIZE 50
@@ -62,7 +67,8 @@ typedef enum {
 typedef enum {
 ENEMY_TYPE_RUNNER = 1,
 ENEMY_TYPE_SHOOTER,
-ENEMY_TYPE_STATICSHOOTER
+ENEMY_TYPE_STATICSHOOTER,
+ENEMY_TYPE_BOSS
 }Enemies;
 
 typedef enum {
@@ -85,6 +91,11 @@ struct Enemy {
     int type;
     bool active, IsLeft;
     void (*update)(void*, void*, void*, double, int, int); // функция обновления для игрового цикл, нашел, вроде прикольно, до конца все равно не понимаю
+    //для босса
+    double charge_timer; // таймер ожидания перед началом тарана
+    double cooldown_timer; // таймер кулдауна на таран
+    bool is_charging; // состояние: в процессе тарана или нет
+    double target_x, target_y; // координаты цели для тарана
 };
 
 struct Boost {

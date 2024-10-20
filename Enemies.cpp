@@ -124,37 +124,76 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
     e->sprite->dst.x = e->x;
     e->sprite->dst.y = e->y;
 }
-//void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current)
-//{
-//    Enemy* e = (Enemy*)enemy;
-//    Player* p = (Player*)player;
-//    Enemy* es = (Enemy*)enemies;
-//    double dx = p->x - e->x;
-//    double dy = p->y - e->y;
-//    if (dx < 0)
-//        e->IsLeft = 1;
-//    else if (dx > 0)
-//        e->IsLeft = 0;
-//    double length = sqrt(dx * dx + dy * dy);
-//    if (length > PLAYER_WIDTH) {
-//        dx = (dx / length) * ENEMY_SPEED * (dTime / 1000.0);
-//        dy = (dy / length) * ENEMY_SPEED * (dTime / 1000.0);
-//        e->x += dx;
-//        e->y += dy;
-//    }
-//    else {
-//        e->x = p->x - ((dx / length) * PLAYER_WIDTH);
-//        e->y = p->y - ((dy / length) * PLAYER_HEIGHT);
-//    }
-//    if (e->x < 0) e->x = 0;
-//    else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
-//
-//    if (e->y < 0) e->y = 0;
-//    else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
-//    checkCollisions(es, numEnemies, current);
-//    e->sprite->dst.x = e->x;
-//    e->sprite->dst.y = e->y;
-//}
+void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current)
+{
+    Enemy* e = (Enemy*)enemy;
+    Player* p = (Player*)player;
+    Enemy* es = (Enemy*)enemies;
+    double dx = p->x - e->x;
+    double dy = p->y - e->y;
+    e->cooldown_timer = CHARGE_COOLDOWN;
+    if (dx < 0)
+        e->IsLeft = 1;
+    else if (dx > 0)
+        e->IsLeft = 0;
+    double length = sqrt(dx * dx + dy * dy);
+    if (e->cooldown_timer > 0) {
+        e->cooldown_timer -= dTime / 1000.0;
+    }
+    if (e->charge_timer > 0) {
+        e->charge_timer -= dTime / 1000.0;
+        if (e->charge_timer <= 0) {
+            e->is_charging = true;
+            e->target_x = p->x;
+            e->target_y = p->y;
+        }
+        return;
+    }
+    if (e->is_charging) {
+        double charge_dx = e->target_x - e->x;
+        double charge_dy = e->target_y - e->y;
+        double charge_length = sqrt(charge_dx * charge_dx + charge_dy * charge_dy);
+
+        if (charge_length > 1.0) {
+            charge_dx = (charge_dx / charge_length) * CHARGE_SPEED * (dTime / 1000.0);
+            charge_dy = (charge_dy / charge_length) * CHARGE_SPEED * (dTime / 1000.0);
+            e->x += charge_dx;
+            e->y += charge_dy;
+        }
+        else {
+            e->is_charging = false;
+            e->cooldown_timer = CHARGE_COOLDOWN;
+        }
+        return;
+    }
+
+    // Если расстояние до игрока меньше CHARGE_DISTANCE и кулдаун завершен
+    if (length <= CHARGE_DISTANCE && e->cooldown_timer <= 0) {
+        // Начинаем задержку перед тараном
+        e->charge_timer = CHARGE_DURATION;
+    }
+    else 
+    {
+        if (length > PLAYER_WIDTH) {
+            dx = (dx / length) * ENEMY_SPEED * (dTime / 1000.0);
+            dy = (dy / length) * ENEMY_SPEED * (dTime / 1000.0);
+            e->x += dx;
+            e->y += dy;
+        }
+        else {
+            e->x = p->x - ((dx / length) * PLAYER_WIDTH);
+            e->y = p->y - ((dy / length) * PLAYER_HEIGHT);
+        }
+        if (e->x < 0) e->x = 0;
+        else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
+
+        if (e->y < 0) e->y = 0;
+        else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
+        checkCollisions(es, numEnemies, current);
+        e->sprite->dst.x = e->x;
+        e->sprite->dst.y = e->y;
+    }
+}
 void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраняем тип и координаты врага выбираем логику поведения
 {
     e->x = x;
@@ -180,6 +219,12 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
         e->update = updatestaticShootingEnemyPosition;
         e->sprite = Sprite_Copy(sprits[enemy_staticshooter]);
     }
+    else if (type == ENEMY_TYPE_BOSS)
+    {
+        e->health = 200;
+        e->update = updateEnemyBoss;
+        e->sprite = Sprite_Load(ren, "staticshooter.spr");
+    }
     e->dead = Textur_Copy(texturs[grob]);
     e->sprite->dst.h *= TEXTUR_MULT;
     e->sprite->dst.w *= TEXTUR_MULT;
@@ -196,7 +241,7 @@ void deleteEnemies(Enemy* enemies, int numEnemies)
 }
 void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
-    deleteEnemies(enemies, numEnemies - 10);
+    /*deleteEnemies(enemies, numEnemies - 10);*/
     if (numOfWave <= 4)
     {
         for (int i = 0; i < numEnemies; i++)
@@ -207,12 +252,12 @@ void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредстве
             initEnemy(&enemies[i], type, x, y, numOfWave);
         }
     }
-    /*else if (numOfWave == 4)
+    else if (numOfWave == 4)
     {
         int type = 4;
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;
-        initEnemy(&enemies[i], type, x, y, numOfWave);
+        initEnemy(&enemies[0], type, x, y, numOfWave);
 
-    }*/
+    }
 }
