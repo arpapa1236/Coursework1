@@ -198,8 +198,6 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
 {
     e->x = x;
     e->y = y;
-    //e->x = x;
-    //e->y = y;
     e->type = type; // Сохраняем тип в структуру для отрисовки цвета и поведения
     e->active = 1;
     e->IsLeft = 1;
@@ -223,7 +221,7 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
     {
         e->health = 200;
         e->update = updateEnemyBoss;
-        e->sprite = Sprite_Load(ren, "staticshooter.spr");
+        e->sprite = Sprite_Copy(sprits[enemy_boss]);
     }
     e->dead = Textur_Copy(texturs[grob]);
     e->sprite->dst.h *= TEXTUR_MULT;
@@ -252,7 +250,7 @@ void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредстве
             initEnemy(&enemies[i], type, x, y, numOfWave);
         }
     }
-    else if (numOfWave == 4)
+    else
     {
         int type = 4;
         double x = rand() % WIN_WIDTH;
