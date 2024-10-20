@@ -131,7 +131,6 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
-    static bool attack = false;
     if (dx < 0)
         e->IsLeft = 1;
     else if (dx > 0)
@@ -139,7 +138,7 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
     double length = sqrt(dx * dx + dy * dy);
     double range = 250;
     static int startChargeTime = 0;
-    if (attack)
+    if (e->attack)
     {
         if (SDL_GetTicks() - startChargeTime > CHARGE_DURATION * 1000)
         {
@@ -150,8 +149,8 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
             dy = (dy / length) * CHARGE_SPEED * (dTime / 1000.0);
             e->x += dx;
             e->y += dy;
-            if (e->x - e->target_x < 10 && e->y - e->target_y < 10)
-                attack = false;
+            if (length<1)
+                e->attack = false;
         }
     }
     else
@@ -159,7 +158,7 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
         if (length <= range)
         {
             startChargeTime = SDL_GetTicks();
-            attack = true;
+            e->attack = true;
             e->target_x = p->x;
             e->target_y = p->y;
         }
@@ -210,6 +209,7 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
         e->health = 200;
         e->update = updateEnemyBoss;
         e->sprite = Sprite_Copy(sprits[enemy_boss]);
+        e->attack = false;
     }
     e->dead = Textur_Copy(texturs[grob]);
     e->sprite->dst.h *= TEXTUR_MULT;
@@ -238,12 +238,11 @@ void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредстве
             initEnemy(&enemies[i], type, x, y, numOfWave);
         }
     }
-    else
+    else if (numOfWave==4)
     {
         int type = 4;
         double x = rand() % WIN_WIDTH;
         double y = rand() % WIN_HEIGHT;
         initEnemy(&enemies[0], type, x, y, numOfWave);
-
     }
 }

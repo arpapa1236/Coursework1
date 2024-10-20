@@ -97,7 +97,7 @@ int Game()
     for (int i = 0; i < MAX_BULLETS; i++) {
         bullets[i].active = false;
     }
-    int numEnemies = 0, numOfWave = 4, IswaveActive=0, activeEnemies=0;
+    int numEnemies = 0, numOfWave = 3, IswaveActive=0, activeEnemies=0;
     Boost boost;
     boost.active = false;
     boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
@@ -127,17 +127,23 @@ int Game()
 #pragma region WAVES
             if (activeEnemies == 0)
             {
-                if (numOfWave < 4)
+                if (numOfWave < 3)
 
                 {
                     numOfWave++;
                     numEnemies += 10;
                     activeEnemies += numEnemies;
                 }
-                if (numOfWave == 4)
+                else if (numOfWave < 4)
                 {
-                        numEnemies = 1;
-                        activeEnemies += numEnemies;
+                     numOfWave++;
+                     numEnemies = 1;
+                     activeEnemies += numEnemies;
+                }
+                else
+                {
+                    run = false;
+                    // you win + record
                 }
                 spawnEnemies(enemies, numEnemies, numOfWave);
             }
@@ -244,6 +250,8 @@ int Game()
                     }
                     if (enemies[j].active && AreaDamageforEnemy(&player, &enemies[j], 50))
                         player.health -= 2;
+                    if (enemies[j].active && AreaDamageforEnemy(&player, &enemies[j], 50)&&numOfWave==4)
+                        player.health -= 1000;
                 }
                 attack1Time = 0;
             }
@@ -262,6 +270,9 @@ int Game()
             HealthBar(&player);
 #pragma endregion //HEALTH_BAR
             SDL_RenderPresent(ren);
+            if (player.health <= 0)
+                run = false;
+            // gameover 
         }
     return 0;
 }	

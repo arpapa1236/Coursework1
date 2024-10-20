@@ -31,7 +31,7 @@ extern Mix_Music* music;
 #define PLAYER_WIDTH 50
 #define PLAYER_HEIGHT 50
 // босс
-#define CHARGE_DURATION 2// в секундах, задержка перед тараном
+#define CHARGE_DURATION 0.25// в секундах, задержка перед тараном
 #define CHARGE_COOLDOWN 5
 #define CHARGE_SPEED 100 
 
@@ -91,6 +91,7 @@ struct Enemy {
     bool active, IsLeft;
     void (*update)(void*, void*, void*, double, int, int); // функция обновления для игрового цикл, нашел, вроде прикольно, до конца все равно не понимаю
     int target_x, target_y;
+    bool attack;
 };
 
 struct Boost {

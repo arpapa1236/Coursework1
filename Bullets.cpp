@@ -152,7 +152,10 @@ void initWeapon(Weapon* weapon, int type) {
 }
 void drawBullet(SDL_Renderer* renderer, Bullet* bullet) {
     if (bullet->active) {
-        SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+        if (bullet->owner == OWNER_ENEMY)
+            SDL_SetRenderDrawColor(ren, 255, 255, 0, 255);
+        else
+            SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
         SDL_Rect bulletRect = { bullet->x, bullet->y, BULLET_SIZE, BULLET_SIZE };
         SDL_RenderFillRect(renderer, &bulletRect);
     }
