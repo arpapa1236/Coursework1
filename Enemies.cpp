@@ -101,8 +101,8 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
         e->IsLeft = 0;
     double length = sqrt(dx * dx + dy * dy);
     double range = 150;
-    static double lastShootTime = 0; // Время последнего выстрела
-    double currentTime = SDL_GetTicks() / 1000.0; // Текущее время в секундах
+    static double lastShootTime = 0;
+    double currentTime = SDL_GetTicks() / 1000.0;
 
     if (length <= range) {
     }
@@ -131,68 +131,48 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
     Enemy* es = (Enemy*)enemies;
     double dx = p->x - e->x;
     double dy = p->y - e->y;
-    e->cooldown_timer = CHARGE_COOLDOWN;
+    bool attack = false;
     if (dx < 0)
         e->IsLeft = 1;
     else if (dx > 0)
         e->IsLeft = 0;
     double length = sqrt(dx * dx + dy * dy);
-    if (e->cooldown_timer > 0) {
-        e->cooldown_timer -= dTime / 1000.0;
+    double range = 250;
+    static int startChargeTime = 0;
+    if (attack)
+    {
+        if (SDL_GetTicks()-startChargeTime>)
+        {
+
+        }
     }
-    if (e->charge_timer > 0) {
-        e->charge_timer -= dTime / 1000.0;
-        if (e->charge_timer <= 0) {
-            e->is_charging = true;
+    else
+    {
+        if (length <= range)
+        {
+            startChargeTime = SDL_GetTicks();
+            attack = true;
             e->target_x = p->x;
             e->target_y = p->y;
         }
-        return;
-    }
-    if (e->is_charging) {
-        double charge_dx = e->target_x - e->x;
-        double charge_dy = e->target_y - e->y;
-        double charge_length = sqrt(charge_dx * charge_dx + charge_dy * charge_dy);
-
-        if (charge_length > 1.0) {
-            charge_dx = (charge_dx / charge_length) * CHARGE_SPEED * (dTime / 1000.0);
-            charge_dy = (charge_dy / charge_length) * CHARGE_SPEED * (dTime / 1000.0);
-            e->x += charge_dx;
-            e->y += charge_dy;
-        }
         else {
-            e->is_charging = false;
-            e->cooldown_timer = CHARGE_COOLDOWN;
-        }
-        return;
-    }
-
-    // Если расстояние до игрока меньше CHARGE_DISTANCE и кулдаун завершен
-    if (length <= CHARGE_DISTANCE && e->cooldown_timer <= 0) {
-        // Начинаем задержку перед тараном
-        e->charge_timer = CHARGE_DURATION;
-    }
-    else 
-    {
-        if (length > PLAYER_WIDTH) {
+            // Враг продолжает движение, если он вне радиуса
             dx = (dx / length) * ENEMY_SPEED * (dTime / 1000.0);
             dy = (dy / length) * ENEMY_SPEED * (dTime / 1000.0);
             e->x += dx;
             e->y += dy;
         }
-        else {
-            e->x = p->x - ((dx / length) * PLAYER_WIDTH);
-            e->y = p->y - ((dy / length) * PLAYER_HEIGHT);
-        }
-        if (e->x < 0) e->x = 0;
-        else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
-
-        if (e->y < 0) e->y = 0;
-        else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
-        checkCollisions(es, numEnemies, current);
-        e->sprite->dst.x = e->x;
-        e->sprite->dst.y = e->y;
     }
+
+    // Проверка границ игрового поля и корректировка положения врага
+    if (e->x < 0) e->x = 0;
+    else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
+
+    if (e->y < 0) e->y = 0;
+    else if (e->y > WIN_HEIGHT - PLAYER_HEIGHT) e->y = WIN_HEIGHT - PLAYER_HEIGHT;
+    checkCollisions(es, numEnemies, current);
+    e->sprite->dst.x = e->x;
+    e->sprite->dst.y = e->y;
 }
 void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраняем тип и координаты врага выбираем логику поведения
 {

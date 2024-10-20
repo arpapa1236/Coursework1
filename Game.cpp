@@ -97,7 +97,7 @@ int Game()
     for (int i = 0; i < MAX_BULLETS; i++) {
         bullets[i].active = false;
     }
-    int numEnemies = 0, numOfWave = 0, IswaveActive=0, activeEnemies=0;
+    int numEnemies = 0, numOfWave = 4, IswaveActive=0, activeEnemies=0;
     Boost boost;
     boost.active = false;
     boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
@@ -134,7 +134,7 @@ int Game()
                     numEnemies += 10;
                     activeEnemies += numEnemies;
                 }
-                    if (numOfWave == 4)
+                if (numOfWave == 4)
                 {
                         numEnemies = 1;
                         activeEnemies += numEnemies;
