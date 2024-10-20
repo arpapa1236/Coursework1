@@ -242,7 +242,7 @@ void deleteEnemies(Enemy* enemies, int numEnemies)
 void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {
     /*deleteEnemies(enemies, numEnemies - 10);*/
-    if (numOfWave <= 4)
+    if (numOfWave < 4)
     {
         for (int i = 0; i < numEnemies; i++)
         {
