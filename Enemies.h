@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Bullets.h"
 #include "Boosts.h"
+#include "Sprite.h"
 void checkCollisions(Enemy* enemies, int numEnemies, int current);
 void updateRunningEnemyPosition(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current);
 void updateShootingEnemyPosition(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current);
