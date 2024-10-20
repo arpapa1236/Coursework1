@@ -3,6 +3,11 @@
 Text* TextCreate(const char* str, SDL_Renderer* ren, SDL_Color color, TTF_Font* font)
 {
 	SDL_Surface* syrf = TTF_RenderUTF8_Blended(font, str, color);
+	if (syrf == NULL)
+	{
+		printf("Error ttf:%s\n", SDL_GetError());
+		exit(-100);
+	}
 	Text* rez = (Text*)malloc(sizeof(Text));
 
 	rez->rect = { 0 , 0, syrf->w, syrf->h };

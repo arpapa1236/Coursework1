@@ -36,8 +36,10 @@ Sprite* Sprite_Load(SDL_Renderer* ren, const char* filename);
 //Считает нужно ли поменять кадр в анимации speed - FPS
 void Sprite_NextFrame(Sprite* text, int dtime);
 //Обертка RenderCopy
-void Sprite_RenderCopy(SDL_Renderer* ren, Sprite* spr);
+void Sprite_RenderCopy(SDL_Renderer* ren, const Sprite* spr);
 //Обертка RenderCopyExp
-void Sprite_RenderCopyExp(SDL_Renderer* ren, Sprite* spr, double angel, SDL_RendererFlip flag);
+void Sprite_RenderCopyExp(SDL_Renderer* ren, const Sprite* spr, double angel, SDL_RendererFlip flag);
 //Удаляет текстуру
 void Sprite_Free(Sprite* spr);
+//Делает копию обьекта Sprite возвращает ссылку на созданный объект
+Sprite* Sprite_Copy(const Sprite* spr);

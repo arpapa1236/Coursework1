@@ -5,7 +5,7 @@
 2. Фон карты
 3. Гробик
 */
-char texturs_str[TEXTURS][20] =
+const char* texturs_str[TEXTURS] =
 {
 	{"bac_menu.png"},
 	{"bac_game.png"},
@@ -13,6 +13,15 @@ char texturs_str[TEXTURS][20] =
 	{"boost2.png"},
 	{"boost3.png"},
 	{"grob.png"}
+};
+
+const char* sprite_str[SPRITS] =
+{
+	{"runner.spr"},
+	{"shooter.spr"},
+	{"staticshooter.spr"},
+	{"boss.spr"},
+	{"player.spr"}
 };
 
 void Init()
@@ -71,10 +80,15 @@ void Load()
 {
 	keyboard = SDL_GetKeyboardState(NULL);
 	music = Mix_LoadMUS("music.mp3");
-	texturs = (Textur**)malloc(sizeof(Textur**) * TEXTURS);
-	records = nullptr;
+	texturs = (Textur**)malloc(sizeof(Textur*) * TEXTURS);
+	sprits = (Sprite**)malloc(sizeof(Sprite*) * SPRITS);
+	records = RecordsLoad();
 	for (int i = 0; i < TEXTURS; i++)
 	{
 		texturs[i] = Textur_Load(ren, texturs_str[i]);
+	}
+	for (int i = 0; i < SPRITS; i++)
+	{
+		sprits[i] = Sprite_Load(ren, sprite_str[i]);
 	}
 }

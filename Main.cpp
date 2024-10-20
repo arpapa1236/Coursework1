@@ -26,7 +26,7 @@ Sprite** sprits;
 /*Единый шрифт*/
 TTF_Font* fond;
 /*Массив со всеми рекордами*/
-Record* records;
+Record** records;
 /*Музыка*/
 Mix_Music* music;
 
@@ -50,7 +50,7 @@ int SDL_main(int argc, char** argv)
 	texturs[main_menu_background]->dst.w = WIN_WIDTH;
 	texturs[main_menu_background]->dst.h = WIN_HEIGHT;
 	Menu();
-	//RecordSave(records);
+	RecordsSave(records);
 	Mix_FreeMusic(music);
 	//Высвобождение памяти
 	SDL_DeInit(0);

@@ -56,13 +56,13 @@ void Sprite_NextFrame(Sprite* spr, int dtime)
 	}
 }
 
-void Sprite_RenderCopy(SDL_Renderer* ren, Sprite* spr)
+void Sprite_RenderCopy(SDL_Renderer* ren, const Sprite* spr)
 {
 	if(SDL_RenderCopy(ren, spr->spr, &spr->src, &spr->dst))
 		printf("Ошибка отрисовки:%s\n", SDL_GetError());
 }
 
-void Sprite_RenderCopyExp(SDL_Renderer* ren, Sprite* spr, double angel, SDL_RendererFlip flag)
+void Sprite_RenderCopyExp(SDL_Renderer* ren, const Sprite* spr, double angel, SDL_RendererFlip flag)
 {	
 	if (SDL_RenderCopyEx(ren, spr->spr, &(spr->src), &(spr->dst), angel, NULL, flag))
 		printf("Ошибка отрисовки:%s\n", SDL_GetError());
@@ -74,4 +74,9 @@ void Sprite_Free(Sprite* spr)
 	free(spr);
 }
 
-//Немецкия классическая философия как культурный феномен. Общие черты
+Sprite* Sprite_Copy(const Sprite* spr)
+{
+	Sprite* rez = (Sprite*)malloc(sizeof(Sprite));
+	*rez = *spr;
+	return rez;
+}

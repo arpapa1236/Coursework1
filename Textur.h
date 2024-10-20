@@ -11,8 +11,8 @@ typedef struct Textur
 /*Загрузка текстуры описанной в file. Возвращает структуру типа Textur*/
 Textur* Textur_Load(SDL_Renderer* ren, const char* file);
 /*Отрисовка текстуры из textur с помощью ren*/
-void Textur_RenderCopy(SDL_Renderer* ren, Textur* textur);
+void Textur_RenderCopy(SDL_Renderer* ren, const Textur* textur);
 /*Освобождение памяти*/
 void TexturDestroy(Textur* textur);
 //При использованиее Textur_Copy для освобождениия нужно использовать free()
-Textur* Textur_Copy(Textur* textur);
+Textur* Textur_Copy(const Textur* textur);

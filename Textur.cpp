@@ -22,7 +22,7 @@ Textur* Textur_Load(SDL_Renderer* ren, const char* file)
 	return rez;
 }
 
-void Textur_RenderCopy(SDL_Renderer* ren, Textur* textur)
+void Textur_RenderCopy(SDL_Renderer* ren,const Textur* textur)
 {
 	SDL_RenderCopy(ren, textur->text, &textur->src, &textur->dst);
 }
@@ -33,7 +33,7 @@ void TexturDestroy(Textur* textur)
 	free(textur);
 }
 
-Textur* Textur_Copy(Textur* textur)
+Textur* Textur_Copy(const Textur* textur)
 {
 	Textur* rez = (Textur*)malloc(sizeof(Textur));
 	rez->text = textur->text;
