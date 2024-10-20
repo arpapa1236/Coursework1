@@ -2,18 +2,25 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 
-#define RECORDS 10
+#define RECORD_N 10
+#define RECORD_FILE_NAME "records"
 
 typedef struct
 {
 	/*Имя*/
-	char* name;
+	char name[10];
 	/*Очки*/
 	int glasses;
 } Record;
 
-Record* RecordLoad();
+void RecordsPrint(Record** rec);
 
-void RecordSave(Record*);
+Record* RecordCreate(const char* name, int glasses);
 
-void RecordDestroy(Record*);
+Record** RecordsLoad();
+
+void RecordsSave(Record**);
+
+void RecordsDestroy(Record**);
+
+void NewRecord(Record** recs, Record* newrec);

@@ -201,11 +201,9 @@ int Game()
                                     else
                                     {
                                         enemies[j].health = 0;
-                                        enemies[j].dead = Textur_Copy(texturs[grob]);
                                         enemies[j].dead->dst = enemies[j].sprite->dst;
                                         enemies[j].active = 0;
                                         activeEnemies--;
-                                        Sprite_Free(enemies[j].sprite);
                                     }
                                     break;
                                 }
@@ -234,11 +232,9 @@ int Game()
                         else
                         {
                             enemies[j].health = 0;
-                            enemies[j].dead = Textur_Copy(texturs[grob]);
                             enemies[j].dead->dst = enemies[j].sprite->dst;
                             enemies[j].active = 0;
                             activeEnemies--;
-                            Sprite_Free(enemies[j].sprite);
                         }
                     }
                     if (enemies[j].active && AreaDamageforEnemy(&player, &enemies[j], 50))

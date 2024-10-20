@@ -1,4 +1,5 @@
 #include "Enemies.h"
+#include "Global.h"
 void checkCollisions(Enemy* enemies, int numEnemies, int current)// Коллизия врагов между собой
 // По диагонали проблемно потом доработать обязательно что тут что на игроке, на пуле мб тоже
 {
@@ -166,19 +167,20 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
     if (type == ENEMY_TYPE_RUNNER) {
         e->health = 35+numOfWave*5;
         e->update = updateRunningEnemyPosition;
-        e->sprite = Sprite_Load(ren, "runner.spr");
+        e->sprite = Sprite_Copy(sprits[enemy_runner]);
     }
     else if (type == ENEMY_TYPE_SHOOTER) {
         e->health = 10 + numOfWave * 5;
         e->update = updateShootingEnemyPosition;
-        e->sprite = Sprite_Load(ren, "shooter.spr");
+        e->sprite = Sprite_Copy(sprits[enemy_shooter]);
     }
     else if (type == ENEMY_TYPE_STATICSHOOTER)
     {
         e->health = 10 + numOfWave * 5;
         e->update = updatestaticShootingEnemyPosition;
-        e->sprite = Sprite_Load(ren, "staticshooter.spr");
+        e->sprite = Sprite_Copy(sprits[enemy_staticshooter]);
     }
+    e->dead = Textur_Copy(texturs[grob]);
     e->sprite->dst.h *= TEXTUR_MULT;
     e->sprite->dst.w *= TEXTUR_MULT;
     e->sprite->dst.x = x;
@@ -186,8 +188,11 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
 }
 void deleteEnemies(Enemy* enemies, int numEnemies)
 {
-    //for (int i = 0; i < numEnemies; i++)
-        //text_Free(enemies[i].sprite);
+    for (int i = 0; i < numEnemies; i++)
+    {
+        free(enemies[i].sprite);
+        free(enemies[i].dead);
+    }
 }
 void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредственно выбираем тип врага, его начальный спавн и инициализируем
 {

@@ -16,8 +16,10 @@ extern SDL_Renderer* ren;
 extern Textur** texturs;
 /*Единый шрифт*/
 extern TTF_Font* fond;
+/*Массив спрайтов*/
+extern Sprite** sprits;
 /*Массив со всеми рекордами*/
-extern Record* records;
+extern Record** records;
 /*Музыка*/
 extern Mix_Music* music;
 

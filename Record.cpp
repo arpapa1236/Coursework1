@@ -1,33 +1,71 @@
 #include "Record.h"
 
-Record* RecordLoad()
+void RecordsPrint(Record** rec)
 {
-	FILE* file = fopen("Records", "rt");
-	Record* rez = (Record*)calloc(RECORDS, sizeof(Record));
-	for (int i = 0; i < RECORDS; i++)
-		rez->name = (char*)calloc(50, sizeof(char));
-	if (file == NULL)
-	{
-		file = fopen("Records", "wt");
-		if (file == NULL) exit(0b0110);
-		for (int i = 0; i < RECORDS; i++) fprintf(file, "-\n");
-	}
-	else
-		for (int i = 0; i < RECORDS; i++) fscanf(file, "%s:%d", rez[i].name, &rez[0].glasses);
-	fclose(file);
+	for (int i = 0; i < RECORD_N; i++)
+		printf("%-10s:%d\n", rec[i]->name, rec[i]->glasses);
+}
+
+Record* RecordCreate(const char* name, int glasses)
+{
+	Record* rez = (Record*)malloc(sizeof(Record));
+	strcpy(rez->name, name);
+	rez->glasses = glasses;
 	return rez;
 }
 
-void RecordSave(Record* rec)
+Record** RecordsLoad()
 {
-	FILE* file = fopen("Records", "wt");
-	if (file) for (int i = 0; i < RECORDS; i++) fprintf(file, "%s.%d", rec[i].name, rec[i].glasses);
-	else exit(0b01110);
+	Record** rez = (Record**)calloc(sizeof(Record*), RECORD_N);
+	for (int i = 0; i < RECORD_N; i++)
+		rez[i] = (Record*)calloc(sizeof(Record), 1);
+
+	FILE* file = fopen(RECORD_FILE_NAME, "rt");
+
+	if (file)
+	{
+		char* p;
+		for (int i = 0; i < RECORD_N; i++) fscanf(file, "%s%d", rez[i]->name, &(rez[i]->glasses));
+		fclose(file);
+	}
+	else
+	{
+		for (int i = 0; i < RECORD_N; i++)
+		{
+			strcpy(rez[i]->name, "-");
+			rez[i]->glasses = INT_MAX;
+		}
+	}
+	return rez;
 }
 
-void RecordDestroy(Record* rec)
+void RecordsSave(Record** rec)
 {
-	for (int i = 0; i < RECORDS; i++)
-		free(rec->name);
-	free(rec);
+	FILE* file = fopen(RECORD_FILE_NAME, "wt");
+	if (file) for (int i = 0; i < RECORD_N; i++) fprintf(file, "%s\n%d\n", rec[i]->name, rec[i]->glasses);
+	else exit(-1);
+	fclose(file);
+}
+
+void RecordsDestroy(Record** recs)
+{
+	for (int i = 0; i < RECORD_N; i++)
+		free(recs[i]);
+	free(recs);
+}
+
+void NewRecord(Record** recs, Record* newrec)
+{
+	Record* ptr = newrec, * buff;
+	for (int i = 0; i < RECORD_N; i++)
+	{
+		if (recs[i]->glasses > ptr->glasses)
+		{
+			buff = recs[i];
+			recs[i] = ptr;
+			ptr = buff;
+		}
+	}
+	if (ptr != newrec)
+		free(ptr);
 }
