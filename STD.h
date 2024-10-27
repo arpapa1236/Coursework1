@@ -22,12 +22,12 @@
 */
 enum Texturs
 {
-	main_menu_background,
-	map_background,
-	boost1,
-	boost2,
-	boost3,
-	grob
+	textur_main_menu_background,
+	textur_map_background,
+	textur_boost1,
+	textur_boost2,
+	textur_boost3,
+	textur_grob
 };
 //Колличество текстур
 #define TEXTURS 6
@@ -40,11 +40,11 @@ enum Texturs
 */
 enum Sprits
 {
-	enemy_runner,
-	enemy_shooter,
-	enemy_staticshooter,
-	enemy_boss,
-	player
+	sprite_enemy_runner,
+	sprite_enemy_shooter,
+	sprite_enemy_staticshooter,
+	sprite_enemy_boss,
+	sprite_player
 };
 #define SPRITS 5
 //Размеры окна
@@ -57,3 +57,5 @@ void Init();
 void Load();
 /*Деинициализирует SDL, принимает код ошибки*/
 void SDL_DeInit(int error);
+
+void MemoryFree();

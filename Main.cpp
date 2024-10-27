@@ -45,13 +45,12 @@ int SDL_main(int argc, char** argv)
 	//Шрифт
 	fond = TTF_OpenFont("Font/RobotoMono.ttf", 50);
 	//Запуск музыки
-	//Mix_PlayMusic(music, -1);
+	Mix_PlayMusic(music, -1);
 	//Установка размеров фона главного экрана
-	texturs[main_menu_background]->dst.w = WIN_WIDTH;
-	texturs[main_menu_background]->dst.h = WIN_HEIGHT;
+	texturs[textur_main_menu_background]->dst.w = WIN_WIDTH;
+	texturs[textur_main_menu_background]->dst.h = WIN_HEIGHT;
 	Menu();
-	RecordsSave(records);
-	//Mix_FreeMusic(music);
+	MemoryFree();
 	//Высвобождение памяти
 	SDL_DeInit(0);
 	return 0;
@@ -198,7 +197,7 @@ int Menu()
 		/*Отрисовка*/
 		if(1000 / 60 < ftime)
 		{
-			Textur_RenderCopy(ren, texturs[main_menu_background]);
+			Textur_RenderCopy(ren, texturs[textur_main_menu_background]);
 			PrintMenu(menu, act);
 			SDL_RenderPresent(ren);
 			ftime = 0;
@@ -292,7 +291,7 @@ int Setting()
 		oldtime = newtime;
 		if(1000 / 60 < ftime)
 		{
-			Textur_RenderCopy(ren, texturs[main_menu_background]);
+			Textur_RenderCopy(ren, texturs[textur_main_menu_background]);
 			TextRender(textVolume, ren);
 			TextRender(textManual[0], ren);
 			TextRender(textManual[1], ren);

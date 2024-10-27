@@ -69,3 +69,10 @@ void NewRecord(Record** recs, Record* newrec)
 	if (ptr != newrec)
 		free(ptr);
 }
+
+bool IfRecord(Record** recs, int time)
+{
+	for (int i = 0; i < RECORD_N; i++)
+		if (recs[i]->glasses > time) return true;
+	return false;
+}

@@ -92,3 +92,11 @@ void Load()
 		sprits[i] = Sprite_Load(ren, sprite_str[i]);
 	}
 }
+
+void MemoryFree()
+{
+	Mix_FreeMusic(music);
+	for (int i = 0; i < TEXTURS; i++) TexturDestroy(texturs[i]);
+	for (int i = 0; i < SPRITS; i++) Sprite_Free(sprits[i]);
+	RecordsDestroy(records);
+}
