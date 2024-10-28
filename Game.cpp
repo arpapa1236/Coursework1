@@ -23,11 +23,12 @@ void Win(int time)
 	NewRecord(records, newRocord);
 	free(newRocord);
 	RecordsSave(records);
+	RecordsPrint(records);
 }
 
 void Loss()
 {
-	Text* textwin = TextCreate("You loss:(", ren, { 0, 0, 255, 0 }, fond);
+	Text* textwin = TextCreate("You loss :-(", ren, { 0, 0, 255, 0 }, fond);
 	textwin->rect.x = (WIN_WIDTH - textwin->rect.w) / 2;
 	textwin->rect.y = (WIN_HEIGHT - textwin->rect.h) / 2;
 	int beginTime = SDL_GetTicks(), newTine = beginTime;
@@ -142,7 +143,7 @@ int Game()
 	boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
 
 	beginGame = SDL_GetTicks();
-	bool win;
+	bool quit = false;
 	while (run)
 	{
 		while (SDL_PollEvent(&ev))
@@ -152,6 +153,7 @@ int Game()
 			case SDL_QUIT:
 				endGame = SDL_GetTicks();
 				run = false;
+				quit = true;
 				break;
 			}
 		}
@@ -311,11 +313,12 @@ int Game()
 		if (player.health <= 0)
 			run = false;
 	}
-	endGame = SDL_GetTicks();
 	run = true;
-	if (numOfWave == 4 && player.health > 0) Win(endGame - beginGame);
-	else if (player.health <= 0) Loss();
-	else return -1;
+	if (quit)
+		return -1;
+	else
+		if (numOfWave == 4 && player.health > 0) Win(endGame - beginGame);
+		else Loss();
 	free(player.text);
 	return 0;
 }
