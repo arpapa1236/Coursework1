@@ -54,7 +54,7 @@ void applyBoost(Player* player, Boost* boost)
 }
 void removeBoost(Player* player, Boost* boost, int currentTime)
 {
-    if (player->boostType != 0 && currentTime >= player->boostEndTime) {
+    if (player->boostType !=0 && currentTime >= player->boostEndTime) {
         switch (player->boostType)
         {
         case SPEED_BOOST:

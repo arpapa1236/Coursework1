@@ -9,21 +9,46 @@ void Win(int time)
 		TextRender(textwin, ren);
 		SDL_RenderPresent(ren);
 		newTine = SDL_GetTicks();
+		SDL_PollEvent(NULL);
 	}
 	TextDestroy(textwin);
 
 	char name[10];
 	IfRecord(records, time);
 	printf("New rocord!!\n");
-	do {
-		printf("Name record>");
-		scanf("%s", name);
-	} while (!name[0]);
+	printf("Name record>");
+	scanf("%s", name);
 	Record* newRocord = RecordCreate(name, time);
 	NewRecord(records, newRocord);
 	free(newRocord);
 	RecordsSave(records);
 	RecordsPrint(records);
+}
+
+int* x, r;
+
+void CircleCreate(int rad)
+{
+	r = rad;
+	x = (int*)malloc(sizeof(int) * (r + 1));
+	for (int i = 0; i <= r; i++)
+		x[i] = r * cos(asin((double)i / r));
+}
+
+void Circle(Player* player)
+{
+	SDL_Point center = {player->x + player->text->dst.w / 2, player->y + player->text->dst.h / 2 };
+	SDL_SetRenderDrawColor(ren, 75, 100, 60, 0);
+	for (int i = 0; i <= r; i++)
+	{
+		SDL_RenderDrawLine(ren, center.x - x[i], center.y + i, center.x + x[i], center.y + i);
+		SDL_RenderDrawLine(ren, center.x - x[i], center.y - i, center.x + x[i], center.y - i);
+	}
+}
+
+void CircleDestroi()
+{
+	free(x);
 }
 
 void Loss()
@@ -36,6 +61,7 @@ void Loss()
 		TextRender(textwin, ren);
 		SDL_RenderPresent(ren);
 		newTine = SDL_GetTicks();
+		SDL_PollEvent(NULL);
 	}
 	TextDestroy(textwin);
 }
@@ -118,6 +144,7 @@ void Timer(TTF_Font* font, Uint32 time)
 
 int Game()
 {
+	CircleCreate(100);
 	TTF_Font* font_timer = TTF_OpenFont("Font\\RobotoMono.ttf", 30);
 	bool run = true;
 	SDL_Event ev;
@@ -137,7 +164,7 @@ int Game()
 	for (int i = 0; i < MAX_BULLETS; i++) {
 		bullets[i].active = false;
 	}
-	int numEnemies = 0, numOfWave = 3, IswaveActive = 0, activeEnemies = 0;
+	int numEnemies = 0, numOfWave = 1, IswaveActive = 0, activeEnemies = 0;
 	Boost boost;
 	boost.active = false;
 	boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
@@ -210,6 +237,7 @@ int Game()
 		SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
 		SDL_RenderClear(ren);
 		Textur_RenderCopy(ren, texturs[textur_map_background]);
+		Circle(&player);
 #pragma endregion //CLEAR
 #pragma region TIMER
 		Timer(font_timer, lastFrameTime - beginGame);
@@ -313,7 +341,6 @@ int Game()
 		if (player.health <= 0)
 			run = false;
 	}
-	run = true;
 	if (quit)
 		return -1;
 	else
