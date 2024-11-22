@@ -128,7 +128,6 @@ void PrintMenu(Text*** text, int act)
 
 int Menu()
 {
-
 	int returnCode = 0;
 	int ftime = 0;
 	SDL_Point mouse = { 0, 0 };
@@ -144,7 +143,6 @@ int Menu()
 			{
 			case SDL_QUIT:
 				run = false;
-				returnCode = -1;
 				break;
 			case SDL_MOUSEMOTION:
 				mouse.x = ev.motion.x;
@@ -199,7 +197,7 @@ int Menu()
 		{
 			Textur_RenderCopy(ren, texturs[textur_main_menu_background]);
 			PrintMenu(menu, act);
-			SDL_RenderPresent(ren);
+			SDL_RenderPresent(ren);	 
 			ftime = 0;
 		}
 	}
