@@ -35,9 +35,12 @@ void TexturDestroy(Textur* textur)
 
 Textur* Textur_Copy(const Textur* textur)
 {
-	Textur* rez = (Textur*)malloc(sizeof(Textur));
-	rez->text = textur->text;
-	rez->src = textur->src;
-	rez->dst = textur->dst;
+	Textur* rez = (Textur*)calloc(1, sizeof(Textur));
+	if (textur)
+	{
+		rez->text = textur->text;
+		rez->src = textur->src;
+		rez->dst = textur->dst;
+	}
 	return rez;
 }

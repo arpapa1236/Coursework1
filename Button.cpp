@@ -11,12 +11,13 @@ Button* ButtonCreate(const Textur* textur, const char* text, SDL_Rect rect_butto
 	rez->textur->dst = { rect_button.x, rect_button.y, rect_button.w, rect_button.w };
 	rez->text->rect.x = rect_button.x;
 	rez->text->rect.y = rect_button.y + (rect_button.h - rect_button.w - rez->text->rect.h) / 2;
+	return rez;
 }
 
 void ButtonDrav(Button* but)
 {
 	SDL_SetRenderDrawColor(ren, but->color.r, but->color.g, but->color.b, but->color.a);
-	SDL_RenderDrawRect(ren, &(but->rect));
+	SDL_RenderFillRect(ren, &(but->rect));
 	Textur_Copy(but->textur);
 	TextRender(but->text, ren);
 }
