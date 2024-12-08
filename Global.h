@@ -57,7 +57,8 @@ extern Mix_Music* music;
 typedef enum {
     SPEED_BOOST,
     DMG_BOOST,
-    HP_BOOST
+    HP_BOOST,
+    NULL_BOOST
 }Boosts;
 #define SPEED_BOOST_AMOUNT 50
 #define DMG_BOOST_AMOUNT 2
