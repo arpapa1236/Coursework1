@@ -36,36 +36,36 @@ void Init()
 	if (win == NULL)
 	{
 		printf("Ошибка создания окна:%s\n", SDL_GetError());
-		SDL_DeInit(0b0010);
+		SDLDeInit(0b0010);
 	}
 
 	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	if (ren == NULL)
 	{
 		printf("Ошибка создания рендера:%s\n", SDL_GetError());
-		SDL_DeInit(0b0010);
+		SDLDeInit(0b0010);
 	}
 
 	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) == 0)
 	{
 		printf("Инициализация SDL_Image прошла с ошибками:%s\n", IMG_GetError());
-		SDL_DeInit(0b0010);
+		SDLDeInit(0b0010);
 	}
 
 	if (Mix_OpenAudio(48000, AUDIO_U8, 1, 2048))
 	{
 		printf("Ошибка инициализации аудио системы: %s\n", Mix_GetError());
-		SDL_DeInit(0b0010);
+		SDLDeInit(0b0010);
 	}
 
 	if (TTF_Init() != NULL)
 	{
 		printf("Ошибка инициализации ttf:%s\n", TTF_GetError());
-		SDL_DeInit(0b0010);
+		SDLDeInit(0b0010);
 	}
 }
 
-void SDL_DeInit(int error)
+void SDLDeInit(int error)
 {
 	if (ren) SDL_DestroyRenderer(ren);
 	if (win) SDL_DestroyWindow(win);
@@ -85,11 +85,11 @@ void Load()
 	records = RecordsLoad();
 	for (int i = 0; i < TEXTURS; i++)
 	{
-		texturs[i] = Textur_Load(ren, texturs_str[i]);
+		texturs[i] = TexturLoad(ren, texturs_str[i]);
 	}
 	for (int i = 0; i < SPRITS; i++)
 	{
-		sprits[i] = Sprite_Load(ren, sprite_str[i]);
+		sprits[i] = SpriteLoad(ren, sprite_str[i]);
 	}
 }
 
@@ -97,6 +97,6 @@ void MemoryFree()
 {
 	Mix_FreeMusic(music);
 	for (int i = 0; i < TEXTURS; i++) TexturDestroy(texturs[i]);
-	for (int i = 0; i < SPRITS; i++) Sprite_Free(sprits[i]);
+	for (int i = 0; i < SPRITS; i++) SpriteFree(sprits[i]);
 	RecordsDestroy(records);
 }

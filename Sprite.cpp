@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Sprite.h"
 
-Sprite* Sprite_Load(SDL_Renderer* ren, const char* filename)
+Sprite* SpriteLoad(SDL_Renderer* ren, const char* filename)
 {
 	char s[256] = "Sprite\\";
 	strcat(s, filename);
@@ -38,7 +38,7 @@ Sprite* Sprite_Load(SDL_Renderer* ren, const char* filename)
 	return rez;
 }
 
-void Sprite_NextFrame(Sprite* spr, int dtime)
+void SpriteNextFrame(Sprite* spr, int dtime)
 {
 	spr->frametime += dtime;
 	if (spr->frametime >= 1000 / spr->speed)
@@ -56,25 +56,25 @@ void Sprite_NextFrame(Sprite* spr, int dtime)
 	}
 }
 
-void Sprite_RenderCopy(SDL_Renderer* ren, const Sprite* spr)
+void SpriteRenderCopy(SDL_Renderer* ren, const Sprite* spr)
 {
 	if(SDL_RenderCopy(ren, spr->spr, &spr->src, &spr->dst))
 		printf("Ошибка отрисовки:%s\n", SDL_GetError());
 }
 
-void Sprite_RenderCopyExp(SDL_Renderer* ren, const Sprite* spr, double angel, SDL_RendererFlip flag)
+void SpriteRenderCopyExp(SDL_Renderer* ren, const Sprite* spr, double angel, SDL_RendererFlip flag)
 {	
 	if (SDL_RenderCopyEx(ren, spr->spr, &(spr->src), &(spr->dst), angel, NULL, flag))
 		printf("Ошибка отрисовки:%s\n", SDL_GetError());
 }
 
-void Sprite_Free(Sprite* spr)
+void SpriteFree(Sprite* spr)
 {
 	SDL_DestroyTexture(spr->spr);
 	free(spr);
 }
 
-Sprite* Sprite_Copy(const Sprite* spr)
+Sprite* SpriteCopy(const Sprite* spr)
 {
 	Sprite* rez = (Sprite*)malloc(sizeof(Sprite));
 	*rez = *spr;

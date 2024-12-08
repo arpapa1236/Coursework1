@@ -85,24 +85,24 @@ void HealthBar(Player* player)
 void drawPlayer(Player* player, Uint32 dtime)
 {
 	if (player->IsLeft)
-		Sprite_RenderCopyExp(ren, player->text, 0, SDL_FLIP_HORIZONTAL);
+		SpriteRenderCopyExp(ren, player->text, 0, SDL_FLIP_HORIZONTAL);
 	else
-		Sprite_RenderCopy(ren, player->text);
+		SpriteRenderCopy(ren, player->text);
 	if (player->Run)
-		Sprite_NextFrame(player->text, dtime);
+		SpriteNextFrame(player->text, dtime);
 }
 
 void drawEnemy(Enemy* enemy, Uint32 dtime) {
 	if (enemy->active)
 	{
 		if (enemy->IsLeft)
-			Sprite_RenderCopyExp(ren, enemy->sprite, 0, SDL_FLIP_HORIZONTAL);
+			SpriteRenderCopyExp(ren, enemy->sprite, 0, SDL_FLIP_HORIZONTAL);
 		else
-			Sprite_RenderCopy(ren, enemy->sprite);
-		Sprite_NextFrame(enemy->sprite, dtime);
+			SpriteRenderCopy(ren, enemy->sprite);
+		SpriteNextFrame(enemy->sprite, dtime);
 	}
 	else
-		Textur_RenderCopy(ren, enemy->dead);
+		TexturRenderCopy(ren, enemy->dead);
 }
 
 void drawBoost(Boost* boost, int type)
@@ -125,7 +125,7 @@ void drawBoost(Boost* boost, int type)
 	}
 	text->dst.x = boost->x;
 	text->dst.y = boost->y;
-	Textur_RenderCopy(ren, text);
+	TexturRenderCopy(ren, text);
 }
 //Таймер в углу экрана
 void Timer(TTF_Font* font, Uint32 time)
@@ -148,7 +148,7 @@ int Game()
 	TTF_Font* font_timer = TTF_OpenFont("Font\\RobotoMono.ttf", 30);
 	bool run = true;
 	SDL_Event ev;
-	Player player = { Sprite_Copy(sprits[sprite_player]), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE, 0, 0};
+	Player player = { SpriteCopy(sprits[sprite_player]), WIN_WIDTH / 2, WIN_HEIGHT / 2, PLAYER_SPEED, 100, BULLET_DAMAGE, 0, 0};
 	player.text->dst.w *= 0.5;
 	player.text->dst.h *= 0.5;
 	player.text->dst.x = WIN_WIDTH / 2;
@@ -262,7 +262,7 @@ int Game()
 #pragma region CLEAR
 		SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
 		SDL_RenderClear(ren);
-		Textur_RenderCopy(ren, texturs[textur_map_background]);
+		TexturRenderCopy(ren, texturs[textur_map_background]);
 		Circle(&player);
 #pragma endregion //CLEAR
 #pragma region TIMER

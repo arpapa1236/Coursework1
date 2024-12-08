@@ -1,5 +1,5 @@
 #include "Textur.h"
-Textur* Textur_Load(SDL_Renderer* ren, const char* file)
+Textur* TexturLoad(SDL_Renderer* ren, const char* file)
 {
 	Textur* rez = (Textur*)malloc(sizeof(Textur));
 	char s[256] = "Textur\\";
@@ -22,7 +22,7 @@ Textur* Textur_Load(SDL_Renderer* ren, const char* file)
 	return rez;
 }
 
-void Textur_RenderCopy(SDL_Renderer* ren,const Textur* textur)
+void TexturRenderCopy(SDL_Renderer* ren,const Textur* textur)
 {
 	SDL_RenderCopy(ren, textur->text, &textur->src, &textur->dst);
 }
@@ -33,7 +33,7 @@ void TexturDestroy(Textur* textur)
 	free(textur);
 }
 
-Textur* Textur_Copy(const Textur* textur)
+Textur* TexturCopy(const Textur* textur)
 {
 	Textur* rez = (Textur*)calloc(1, sizeof(Textur));
 	if (textur)

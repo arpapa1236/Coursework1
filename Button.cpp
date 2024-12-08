@@ -3,7 +3,7 @@
 Button* ButtonCreate(const Textur* textur, const char* text, SDL_Rect rect_button, SDL_Color color_button)
 {
 	Button* rez = (Button*)malloc(sizeof(Button));
-	rez->textur = Textur_Copy(textur);
+	rez->textur = TexturCopy(textur);
 	rez->text = TextCreate(text, ren, { 0, 0, 0, 0 }, fond);
 	rez->rect = rect_button;
 	rez->color = color_button;
@@ -18,7 +18,7 @@ void ButtonDrav(Button* but)
 {
 	SDL_SetRenderDrawColor(ren, but->color.r, but->color.g, but->color.b, but->color.a);
 	SDL_RenderFillRect(ren, &(but->rect));
-	Textur_Copy(but->textur);
+	TexturCopy(but->textur);
 	TextRender(but->text, ren);
 }
 

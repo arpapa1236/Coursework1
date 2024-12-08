@@ -191,27 +191,27 @@ void initEnemy(Enemy* e, int type, double x, double y, int numOfWave) // сохраня
     if (type == ENEMY_TYPE_RUNNER) {
         e->health = 35+numOfWave*5;
         e->update = updateRunningEnemyPosition;
-        e->sprite = Sprite_Copy(sprits[sprite_enemy_runner]);
+        e->sprite = SpriteCopy(sprits[sprite_enemy_runner]);
     }
     else if (type == ENEMY_TYPE_SHOOTER) {
         e->health = 10 + numOfWave * 5;
         e->update = updateShootingEnemyPosition;
-        e->sprite = Sprite_Copy(sprits[sprite_enemy_shooter]);
+        e->sprite = SpriteCopy(sprits[sprite_enemy_shooter]);
     }
     else if (type == ENEMY_TYPE_STATICSHOOTER)
     {
         e->health = 10 + numOfWave * 5;
         e->update = updatestaticShootingEnemyPosition;
-        e->sprite = Sprite_Copy(sprits[sprite_enemy_staticshooter]);
+        e->sprite = SpriteCopy(sprits[sprite_enemy_staticshooter]);
     }
     else if (type == ENEMY_TYPE_BOSS)
     {
         e->health = 200;
         e->update = updateEnemyBoss;
-        e->sprite = Sprite_Copy(sprits[sprite_enemy_boss]);
+        e->sprite = SpriteCopy(sprits[sprite_enemy_boss]);
         e->attack = false;
     }
-    e->dead = Textur_Copy(texturs[textur_grob]);
+    e->dead = TexturCopy(texturs[textur_grob]);
     e->sprite->dst.h *= TEXTUR_MULT;
     e->sprite->dst.w *= TEXTUR_MULT;
     e->sprite->dst.x = x;

@@ -56,6 +56,6 @@ void Init();
 /*Загрузка игры*/
 void Load();
 /*Деинициализирует SDL, принимает код ошибки*/
-void SDL_DeInit(int error);
+void SDLDeInit(int error);
 
 void MemoryFree();
