@@ -15,9 +15,9 @@ void Win(int time)
 
 	char name[10];
 	IfRecord(records, time);
-	printf("New rocord!!\n");
+	printf("New record!!\n");
 	printf("Name record>");
-	scanf("%s", name);
+	scanf("%s", &name);
 	Record* newRocord = RecordCreate(name, time);
 	NewRecord(records, newRocord);
 	free(newRocord);
@@ -161,10 +161,14 @@ int Game()
 	initWeapon(&playerWeaponTrip, WEAPON_TYPE_TRIPLE_SHOT);
 	initWeapon(&playerWeapon, WEAPON_TYPE_BASIC);
 	initWeapon(&enemyWeapon, WEAPON_TYPE_ENEMY);
+	int whatToDo = 0;
+	int canShootPistol = 0;
+	int canShootTriple = 0;
+	int areadmg = 3;
 	for (int i = 0; i < MAX_BULLETS; i++) {
 		bullets[i].active = false;
 	}
-	int numEnemies = 0, numOfWave = 1, IswaveActive = 0, activeEnemies = 0;
+	int numEnemies = 0, numOfWave = 0, IswaveActive = 0, activeEnemies = 0;
 	Boost boost;
 	boost.active = false;
 	boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
@@ -178,7 +182,7 @@ int Game()
 			switch (ev.type)
 			{
 			case SDL_QUIT:
-				endGame = SDL_GetTicks();
+				int endGame = SDL_GetTicks();
 				run = false;
 				quit = true;
 				break;
@@ -198,6 +202,35 @@ int Game()
 			if (numOfWave < 3)
 
 			{
+				whatToDo++;
+				if (whatToDo < 3) {
+					int weaponnum;
+					printf("Какое оружие взять? 1 - пистолет 2 - дробовик\n");
+					scanf("%i", &weaponnum);
+					if (weaponnum == 1) canShootPistol = 1;
+					else canShootTriple = 1;
+				}
+				else
+				{
+					int weaponnum;
+					printf("Что вы хотите улучшить? 1 - урон по области 2 - урон от оружия 3 - восстановить хп\n");
+					scanf("%i", &weaponnum);
+					switch (weaponnum)
+					{
+					case 1:
+						areadmg += 1;
+						break;
+					case 2:
+						player.dmg += 1;
+						break;
+					case 3:
+						player.health = 100;
+						break;
+					default:
+						player.health = 100;
+						break;
+					}
+				}
 				numOfWave++;
 				numEnemies += 10;
 				activeEnemies += numEnemies;
@@ -243,11 +276,11 @@ int Game()
 		Timer(font_timer, lastFrameTime - beginGame);
 #pragma endregion //TIMER
 
-		if (SDL_GetTicks() >= playerWeapon.nextFireTime && numOfWave > 1) {
+		if (SDL_GetTicks() >= playerWeapon.nextFireTime && canShootPistol) {
 			playerWeapon.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
 			playerWeapon.nextFireTime = SDL_GetTicks() + (1000 / playerWeapon.fireRate);
 		}
-		if (SDL_GetTicks() >= playerWeaponTrip.nextFireTime && numOfWave > 2) {
+		if (SDL_GetTicks() >= playerWeaponTrip.nextFireTime && canShootTriple) {
 			playerWeaponTrip.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
 			playerWeaponTrip.nextFireTime = SDL_GetTicks() + (1000 / playerWeaponTrip.fireRate);
 		}
@@ -305,7 +338,7 @@ int Game()
 			{
 				if (enemies[j].active && AreaDamage(&player, &enemies[j], 100))
 				{
-					enemies[j].health -= 3;
+					enemies[j].health -= areadmg;
 					if (enemies[j].health > 0)
 						enemies[j].active = 1;
 					else
@@ -344,7 +377,12 @@ int Game()
 	if (quit)
 		return -1;
 	else
-		if (numOfWave == 4 && player.health > 0) Win(endGame - beginGame);
+		if (numOfWave == 4 && player.health > 0)
+		{
+			endGame = SDL_GetTicks();
+			Win(endGame - beginGame);
+			run = false;
+		}
 		else Loss();
 	free(player.text);
 	return 0;
