@@ -52,7 +52,7 @@ int SDL_main(int argc, char** argv)
 	Menu();
 	MemoryFree();
 	//Высвобождение памяти
-	SDL_DeInit(0);
+	SDLDeInit(0);
 	return 0;
 }
 
@@ -195,7 +195,7 @@ int Menu()
 		/*Отрисовка*/
 		if(1000 / 60 < ftime)
 		{
-			Textur_RenderCopy(ren, texturs[textur_main_menu_background]);
+			TexturRenderCopy(ren, texturs[textur_main_menu_background]);
 			PrintMenu(menu, act);
 			SDL_RenderPresent(ren);	 
 			ftime = 0;
@@ -289,7 +289,7 @@ int Setting()
 		oldtime = newtime;
 		if(1000 / 60 < ftime)
 		{
-			Textur_RenderCopy(ren, texturs[textur_main_menu_background]);
+			TexturRenderCopy(ren, texturs[textur_main_menu_background]);
 			TextRender(textVolume, ren);
 			TextRender(textManual[0], ren);
 			TextRender(textManual[1], ren);

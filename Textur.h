@@ -9,10 +9,10 @@ typedef struct Textur
 	SDL_Rect dst, src;
 } Textur;
 /*Загрузка текстуры описанной в file. Возвращает структуру типа Textur*/
-Textur* Textur_Load(SDL_Renderer* ren, const char* file);
+Textur* TexturLoad(SDL_Renderer* ren, const char* file);
 /*Отрисовка текстуры из textur с помощью ren*/
-void Textur_RenderCopy(SDL_Renderer* ren, const Textur* textur);
+void TexturRenderCopy(SDL_Renderer* ren, const Textur* textur);
 /*Освобождение памяти*/
 void TexturDestroy(Textur* textur);
 //При использованиее Textur_Copy для освобождениия нужно использовать free()
-Textur* Textur_Copy(const Textur* textur);
+Textur* TexturCopy(const Textur* textur);
