@@ -418,6 +418,7 @@ int Game()
 		if (player.health <= 0)
 			run = false;
 	}
+	
 	if (quit)
 		return -1;
 	else
