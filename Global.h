@@ -37,7 +37,7 @@ extern Mix_Music* music;
 
 #define MAX_ENEMIES 100
 #define ENEMY_SIZE 50
-#define PLAYER_SPEED 90
+#define PLAYER_SPEED 140
 #define ENEMY_SPEED 45
 #define BULLET_SPEED 150
 #define BULLET_SIZE 3
@@ -104,10 +104,10 @@ struct Boost {
 
 typedef struct {
     double x, y;
-    double dx, dy;  // Направление движения
+    double dx, dy;
     int type;
     bool active;
-    Enemy* target;// Указатель на цель для автонаведения
+    Enemy* target;
     BulletOwner owner;
 } Bullet;
 

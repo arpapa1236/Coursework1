@@ -7,7 +7,7 @@
 void fireBasic(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies, int numEnemies) {
     Player* p = (Player*)owner;
     Enemy* closestEnemy = NULL;
-    double minDistance = DBL_MAX;  //максимально возможноый double для начального сравнения
+    double minDistance = DBL_MAX;
 
     // Поиск ближайшего активного врага
     for (int j = 0; j < numEnemies; j++) {
@@ -33,10 +33,10 @@ void fireBasic(void* owner, Bullet* bullets, int maxBullets, Enemy* enemies, int
                 double dx = closestEnemy->x - p->x;
                 double dy = closestEnemy->y - p->y;
                 double length = sqrt(dx * dx + dy * dy);
-                bullets[i].dx = dx / length * BULLET_SPEED;  // Умножаем на скорость пули
+                bullets[i].dx = dx / length * BULLET_SPEED;
                 bullets[i].dy = dy / length * BULLET_SPEED;
                 bullets[i].owner = OWNER_PLAYER;
-                break;  // Прерываем цикл после активации первой неактивной пули
+                break;
             }
         }
     }
@@ -55,7 +55,7 @@ void fireEnemyBasic(void* owner, Bullet* bullets, int maxBullets, Player* player
             bullets[i].dx = dx / length * BULLET_SPEED;
             bullets[i].dy = dy / length * BULLET_SPEED;
             bullets[i].owner = OWNER_ENEMY;
-            break;  // Прерываем цикл после активации первой неактивной пули
+            break;
         }
     }
 }
@@ -135,8 +135,8 @@ bool AreaDamageforEnemy(Player* player, Enemy* enemy, double radiusAreaDamage)
 }
 void initWeapon(Weapon* weapon, int type) {
     weapon->type = type;
-    weapon->fireRate = 1.0; // Пример: выстрелы 1 раз в секунду
-    weapon->nextFireTime = SDL_GetTicks() + (1000 / weapon->fireRate); // Начальное время для первого выстрела
+    weapon->fireRate = 1.0;
+    weapon->nextFireTime = SDL_GetTicks() + (1000 / weapon->fireRate);
     switch (type) {
     case WEAPON_TYPE_BASIC:
         weapon->fire = fireBasic;
@@ -147,7 +147,6 @@ void initWeapon(Weapon* weapon, int type) {
     case WEAPON_TYPE_ENEMY:
         weapon->enfire = fireEnemyBasic;
         break;
-        // Другие типы оружия
     }
 }
 void drawBullet(SDL_Renderer* renderer, Bullet* bullet) {

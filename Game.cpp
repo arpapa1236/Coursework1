@@ -309,7 +309,7 @@ int Game()
 			boost.active = true;
 		}
 		updateBoost(&boost, currentFrameTime); // деактивируем если долго валяется, пока не проверял может есть баги (ПРОВЕРИТЬ!!!)
-		if (checkBoostCollisionWithPlayer(&player, &boost)) // если коснулись буста деактивим и применяем на игрока потом проверки непосредственно в функцию загнать в мейне они не нужны
+		if (checkBoostCollisionWithPlayer(&player, &boost)) // если коснулись буста деактивим и применяем на игрока
 		{
 			boost.active = false;
 			applyBoost(&player, &boost);
@@ -341,13 +341,11 @@ int Game()
 				bullets[i].x += bullets[i].dx * (dTime / 1000.0);
 				bullets[i].y += bullets[i].dy * (dTime / 1000.0);
 
-				// Проверка на выход за пределы экрана
 				if (bullets[i].x < 0 || bullets[i].x > WIN_WIDTH || bullets[i].y < 0 || bullets[i].y > WIN_HEIGHT) {
 					bullets[i].active = false;
 				}
 				else {
 					if (bullets[i].owner == OWNER_PLAYER) {
-						// Проверка столкновения с врагом
 						for (int j = 0; j < numEnemies; j++) {
 							if (enemies[j].active && checkBulletCollision(bullets[i], enemies[j])) {
 								bullets[i].active = false;
@@ -366,11 +364,9 @@ int Game()
 						}
 					}
 					else if (bullets[i].owner == OWNER_ENEMY) {
-						// Проверка столкновения с игроком
 						if (checkEnemyBulletCollision(bullets[i], player)) {
 							bullets[i].active = false;
 							player.health -= BULLET_DAMAGE;
-							// Здесь может быть логика нанесения урона игроку
 						}
 					}
 				}
@@ -409,7 +405,7 @@ int Game()
 		for (int i = 0; i < numEnemies; i++) {
 			drawEnemy(&enemies[i], dTime);
 		}
-		if (boost.active) // если заспавнен отрисовываем
+		if (boost.active)
 			drawBoost(&boost, boost.type);
 #pragma region HEALTH_BAR
 		HealthBar(&player);

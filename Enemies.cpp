@@ -21,7 +21,6 @@ void checkCollisions(Enemy* enemies, int numEnemies, int current)// Коллизия вра
     }
 }
 void updateRunningEnemyPosition(void* enemy, void* player, void* enemies, double dTime, int numEnemies, int current) //раннер
-//Вродь норм
 {
     Enemy* e = (Enemy*)enemy;
     Player* p = (Player*)player;
@@ -114,7 +113,6 @@ void updatestaticShootingEnemyPosition(void* enemy, void* player, void* enemies,
         e->y += dy;
     }
 
-    // Проверка границ игрового поля и корректировка положения врага
     if (e->x < 0) e->x = 0;
     else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
 
@@ -163,7 +161,6 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
             e->target_y = p->y;
         }
         else {
-            // Враг продолжает движение, если он вне радиуса
             dx = (dx / length) * ENEMY_SPEED * (dTime / 1000.0);
             dy = (dy / length) * ENEMY_SPEED * (dTime / 1000.0);
             e->x += dx;
@@ -171,7 +168,6 @@ void updateEnemyBoss(void* enemy, void* player, void* enemies, double dTime, int
         }
     }
 
-    // Проверка границ игрового поля и корректировка положения врага
     if (e->x < 0) e->x = 0;
     else if (e->x > WIN_WIDTH - PLAYER_WIDTH) e->x = WIN_WIDTH - PLAYER_WIDTH;
 
@@ -232,7 +228,7 @@ void spawnEnemies(Enemy* enemies, int numEnemies, int numOfWave) // непосредстве
     {
         for (int i = 0; i < numEnemies; i++)
         {
-            int type = rand() % numOfWave+1;  // Случайный выбор типа врага который бежит или стрелка (пока так)
+            int type = rand() % numOfWave+1;
             double x = rand() % WIN_WIDTH;
             double y = rand() % WIN_HEIGHT + HEIGHT_HEALTH_BAR;
             initEnemy(&enemies[i], type, x, y, numOfWave);

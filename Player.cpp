@@ -4,7 +4,6 @@
 #include "Player.h"
 int isRight = 1;
 void movePlayer(Player* player, double dx, double dy, int dTime) // ѕросчет скорости и ограничени€
-// ограничени€ убрать если карту бесшовником.
 {
     player->Run = 1;
     double length = sqrt(dx * dx + dy * dy);
