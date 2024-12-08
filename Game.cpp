@@ -173,7 +173,7 @@ int Game()
 	boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
 
 #pragma region Button
-	const int indentationTop = 20, indentationLeft = 20, indentationRight = 20, indentationBottom = 20, indentationBetween = 20;
+	const int indentationTop = 20, indentationLeft = 20, indentationRight = 20, indentationBottom = 50, indentationBetween = 20;
 	int buttonWidth = (WIN_WIDTH - indentationLeft - indentationRight - indentationBetween * 2) / 3;
 	int buttonHeight = WIN_HEIGHT - indentationTop - indentationBottom;
 	int actButton;
