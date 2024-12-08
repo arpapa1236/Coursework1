@@ -161,7 +161,6 @@ int Game()
 	initWeapon(&playerWeaponTrip, WEAPON_TYPE_TRIPLE_SHOT);
 	initWeapon(&playerWeapon, WEAPON_TYPE_BASIC);
 	initWeapon(&enemyWeapon, WEAPON_TYPE_ENEMY);
-	int whatToDo = 0;
 	int canShootPistol = 0;
 	int canShootTriple = 0;
 	int areadmg = 3;
@@ -173,6 +172,27 @@ int Game()
 	boost.active = false;
 	boost.spawnTime = SDL_GetTicks() + (rand() % 2 + 1); //boost.spawnTime = SDL_GetTicks() + (rand() % (MAX_SPAWN_TIME - MIN_SPAWN_TIME + 1) + MIN_SPAWN_TIME);
 
+#pragma region Button
+	const int indentationTop = 20, indentationLeft = 20, indentationRight = 20, indentationBottom = 20, indentationBetween = 20;
+	int buttonWidth = (WIN_WIDTH - indentationLeft - indentationRight - indentationBetween * 2) / 3;
+	int buttonHeight = WIN_HEIGHT - indentationTop - indentationBottom;
+	int actButton;
+	Button** buttons = 0;
+	SDL_Point mouse = { 0,0 };
+	bool runButton = false;
+	SDL_Rect buttonRect[3];
+	buttonRect[0] = { indentationLeft, indentationTop, buttonWidth, buttonHeight };
+	for (int i = 1; i < 3; i++)
+	{
+		buttonRect[i] = { buttonRect[i - 1].x + buttonWidth + indentationBetween, indentationTop, buttonWidth, buttonHeight};
+	}
+	const char* buttonString[3] = { "Dmg area", "Pistol", "Triple" };
+	SDL_Color buttonColor = { 100, 100, 100, 0 };
+	buttons = (Button**)malloc(sizeof(Button*) * 3);
+	for (int i = 0; i < 3; i++)
+		buttons[i] = ButtonCreate(NULL, buttonString[i], buttonRect[i], buttonColor);
+#pragma endregion //Button
+
 	beginGame = SDL_GetTicks();
 	bool quit = false;
 	while (run)
@@ -182,10 +202,54 @@ int Game()
 			switch (ev.type)
 			{
 			case SDL_QUIT:
-				int endGame = SDL_GetTicks();
+				endGame = SDL_GetTicks();
 				run = false;
 				quit = true;
 				break;
+			case SDL_MOUSEMOTION:
+				if (!runButton)
+					break;
+				mouse.x = ev.motion.x;
+				mouse.y = ev.motion.y;
+				if (buttons) actButton = SDL_PointInRect(&mouse, &buttons[0]->rect) ? 1 : (SDL_PointInRect(&mouse, &buttons[1]->rect) ? 2 : (SDL_PointInRect(&mouse, &buttons[2]->rect) ? 3 : 0));
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (!runButton)
+					break;
+				if (ev.button.button == 1)
+					if (actButton > 0)
+					{
+						switch (actButton)
+						{
+						case 1:
+							areadmg += 1;
+							runButton = false;
+							break;
+						case 2:
+							if(!canShootPistol)
+							{
+								canShootPistol = 1;
+								ButtonFree(buttons[1]);
+								buttons[1] = ButtonCreate(NULL, "Dmg armo", buttonRect[1], buttonColor);
+							}
+							else
+								player.dmg += 1;
+							runButton = false;
+							break;
+						case 3:
+							if (!canShootTriple)
+							{
+								canShootTriple = 1;
+								ButtonFree(buttons[2]);
+								buttons[2] = ButtonCreate(NULL, "HP", buttonRect[2], buttonColor);
+							}
+							else
+								player.health = 100;
+							runButton = false;
+							break;
+						}
+						printf("%d\n", actButton);
+					}
 			}
 		}
 		player.Run = 0;
@@ -195,42 +259,31 @@ int Game()
 		lastFrameTime = currentFrameTime;
 		attack1Time += dTime;
 #pragma endregion //TIME
+#pragma region CLEAR
+		SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
+		SDL_RenderClear(ren);
+		Textur_RenderCopy(ren, texturs[textur_map_background]);
+		Circle(&player);
+#pragma endregion //CLEAR
+#pragma region TIMER
+		Timer(font_timer, lastFrameTime - beginGame);
+#pragma endregion //TIMER
+#pragma region BUTTON
+		if(runButton)
+		{
+			for (int i = 0; i < 3; i++)
+				ButtonDrav(buttons[i]);
+			SDL_RenderPresent(ren);
+			continue;
+		}
+#pragma endregion //BUTTON
 		WASDmovement(&player, dTime);
 #pragma region WAVES
 		if (activeEnemies == 0)
 		{
+			runButton = true;
 			if (numOfWave < 3)
-
 			{
-				whatToDo++;
-				if (whatToDo < 3) {
-					int weaponnum;
-					printf("Какое оружие взять? 1 - пистолет 2 - дробовик\n");
-					scanf("%i", &weaponnum);
-					if (weaponnum == 1) canShootPistol = 1;
-					else canShootTriple = 1;
-				}
-				else
-				{
-					int weaponnum;
-					printf("Что вы хотите улучшить? 1 - урон по области 2 - урон от оружия 3 - восстановить хп\n");
-					scanf("%i", &weaponnum);
-					switch (weaponnum)
-					{
-					case 1:
-						areadmg += 1;
-						break;
-					case 2:
-						player.dmg += 1;
-						break;
-					case 3:
-						player.health = 100;
-						break;
-					default:
-						player.health = 100;
-						break;
-					}
-				}
 				numOfWave++;
 				numEnemies += 10;
 				activeEnemies += numEnemies;
@@ -266,15 +319,6 @@ int Game()
 			if (enemies[i].health > 0)
 				enemies[i].update(&enemies[i], &player, enemies, dTime, numEnemies, i); // постоянно апдейтим позиции врагов
 		}
-#pragma region CLEAR
-		SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
-		SDL_RenderClear(ren);
-		Textur_RenderCopy(ren, texturs[textur_map_background]);
-		Circle(&player);
-#pragma endregion //CLEAR
-#pragma region TIMER
-		Timer(font_timer, lastFrameTime - beginGame);
-#pragma endregion //TIMER
 
 		if (SDL_GetTicks() >= playerWeapon.nextFireTime && canShootPistol) {
 			playerWeapon.fire(&player, bullets, MAX_BULLETS, enemies, numEnemies);
