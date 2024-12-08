@@ -230,7 +230,7 @@ int Game()
 							{
 								canShootPistol = 1;
 								ButtonFree(buttons[1]);
-								buttons[1] = ButtonCreate(NULL, "Dmg armo", buttonRect[1], buttonColor);
+								buttons[1] = ButtonCreate(NULL, "Weapon DMG", buttonRect[1], buttonColor);
 							}
 							else
 								player.dmg += 1;
